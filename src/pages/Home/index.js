@@ -1,19 +1,22 @@
 import React from "react";
-import  { View, Text, StyleSheet, Button } from 'react-native';
+import  { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
+
+import Post from '../../components/Post'
 
 export default function Home({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Button title="Go to Login" onPress={() => navigation.navigate('Login')} />
-    </View>
+    <ScrollView style={styles.container}>
+      <Post/>
+      <Post/>
+      <Post/>
+      <Post/>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#ffffff',
   },
   text: {
