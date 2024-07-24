@@ -1,22 +1,77 @@
 import React from "react";
-import  { View, Text, StyleSheet } from 'react-native';
+import  { View, Text, StyleSheet, Button, ScrollView, Image } from 'react-native';
 
-export default function Profile({ navigation }) {
+import Post from '../../components/Post'
+
+// Assuming you have the image in your project's assets folder
+const luisFoto = require('../../../assets/luisfoto.jpeg');
+
+export default function Profile({ navigation, route }) {
+  const { userId } = route.params;
+
   return (
-    <View style={styles.container}>
-      <Text>Página Profile</Text>
-    </View>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false} >
+      <View style={styles.profileInfoContainer}>
+        <Text>id: {userId}</Text>
+        <View style={styles.profilePhotoContainer}>
+          <Image 
+            style={styles.profilePhoto}
+            source={luisFoto}
+          />
+        </View>
+        <Text style={styles.profileName} numberOfLines={1}>Luíz Henrique</Text>
+        <Text style={styles.profileInfo} numberOfLines={1}>Diretor de compras</Text>
+        <Text style={styles.publicationsText}>Publicações</Text>
+      </View>
+      <View style={styles.postsContainer}>
+        <Post navigation={navigation} postId={938374} />
+        <Post navigation={navigation} postId={938374} />
+        <Post navigation={navigation} postId={938374} />
+      </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor: '#fff',
   },
-  text: {
-    fontSize: 25,
-    fontWeight: 'bold'
-  }
+  profileInfoContainer: {
+    width: '100%',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    overflow: 'hidden',
+  },
+  profilePhotoContainer: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    marginBottom: 15,
+  },
+  profilePhoto: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 60,
+  },
+  profileName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#444',
+    marginBottom: 5,
+  },
+  profileInfo: {
+    fontSize: 18,
+    color: '#444',
+    marginBottom: 20,
+  },
+  publicationsText: {
+    fontSize: 18,
+    color: '#0168BC'
+  },
+  postsContainer: {
+    flex: 1,
+  },
 })

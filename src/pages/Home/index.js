@@ -18,8 +18,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  text: {
-    fontSize: 25,
-    fontWeight: 'bold'
-  }
 })

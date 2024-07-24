@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
   profileInfo: {
     height: 48,
     justifyContent: 'space-between',
+    flex: 1,
   },
   profileName: {
     fontSize: 20,

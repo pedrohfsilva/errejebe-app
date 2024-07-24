@@ -38,10 +38,15 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 10,
   },
-  profilePhoto: {
+  profilePhotoContainer: {
     width: 32,
     height: 32,
     borderRadius: 16,
+  },
+  profilePhoto: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 16
   },
   notificationText: {
     fontSize: 18,

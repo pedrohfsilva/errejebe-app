@@ -55,8 +55,8 @@ export default function Comments({ navigation, route }) {
           style={styles.commentInput} 
           onChangeText={setCommentText} 
           value={commentText}
-          placeholder="Comentar"
-          placeholderTextColor="#0168BC"
+          placeholder="Escreva um comentário"
+          placeholderTextColor="#0168BCbb"
           multiline={true}
         />
         <TouchableOpacity onPress={handleSendComment}>
@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
   profileInfo: {
     height: 48,
     justifyContent: 'space-between',
+    flex: 1,
   },
   profileName: {
     fontSize: 20,
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
   commentInputContainer: {
     flexDirection: 'row',
     paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingVertical: 15,
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottomWidth: 1,
