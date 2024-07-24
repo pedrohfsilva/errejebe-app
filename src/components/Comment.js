@@ -50,16 +50,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   profilePhotoContainer: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
   },
   profileProto: {
     flex: 1,
     borderRadius: 20,
   },
   profileInfo: {
-    height: 30,
+    height: 32,
     justifyContent: 'center',
   },
   profileName: {

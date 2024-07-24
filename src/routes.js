@@ -31,7 +31,8 @@ function TabRoutes() {
           paddingTop: 10,
         },
         tabBarShowLabel: false,
-        headerTitleAlign: 'center'
+        headerTitleAlign: 'center',
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tab.Screen name="HomeScreen" component={HomeScreen} options={{
@@ -45,7 +46,7 @@ function TabRoutes() {
         tabBarIcon: ({ size, color }) => (
           <Feather name="search" size={size} color={color}/>
         ),
-        headerTitle: 'Procurar'
+        headerTitle: 'Pesquisar membro'
       }}/>
 
       <Tab.Screen name="CreateScreen" component={CreateScreen} options={{

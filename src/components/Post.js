@@ -69,16 +69,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   profilePhotoContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
   },
   profileProto: {
     flex: 1,
-    borderRadius: 20,
+    borderRadius: 24,
   },
   profileInfo: {
-    height: 40,
+    height: 48,
     justifyContent: 'space-between',
   },
   profileName: {

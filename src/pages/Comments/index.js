@@ -10,8 +10,12 @@ export default function Comments({ navigation, route }) {
   const [commentText, setCommentText] = useState('');
 
   function handleSendComment() {
-    alert("Comentário enviado");
-    setCommentText('');
+    if(commentText == '') {
+      alert('Escreva algo para enviar');
+    } else {
+      alert("Comentário enviado: " + commentText);
+      setCommentText('');
+    }
   }
 
   return (
@@ -53,6 +57,7 @@ export default function Comments({ navigation, route }) {
           value={commentText}
           placeholder="Comentar"
           placeholderTextColor="#0168BC"
+          multiline={true}
         />
         <TouchableOpacity onPress={handleSendComment}>
           <View style={styles.sendCommentButton}>
@@ -91,16 +96,16 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   profilePhotoContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
   },
   profileProto: {
     flex: 1,
-    borderRadius: 20,
+    borderRadius: 24,
   },
   profileInfo: {
-    height: 40,
+    height: 48,
     justifyContent: 'space-between',
   },
   profileName: {
