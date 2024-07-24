@@ -5,11 +5,10 @@ import Post from '../../components/Post'
 
 export default function Home({ navigation }) {
   return (
-    <ScrollView style={styles.container}>
-      <Post/>
-      <Post/>
-      <Post/>
-      <Post/>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false} >
+      <Post navigation={navigation} postId={938374} />
+      <Post navigation={navigation} postId={938374} />
+      <Post navigation={navigation} postId={938374} />
     </ScrollView>
   )
 }
@@ -17,7 +16,7 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#fff',
   },
   text: {
     fontSize: 25,

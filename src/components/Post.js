@@ -1,23 +1,25 @@
 import React from 'react';
-import { View, Image, StyleSheet, TouchableHighlight, Text } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons'
 
-export default function Post() {
+export default function Post({ navigation, postId }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.profileContainer}>
-          <View style={styles.profilePhotoContainer}>
-            <Image 
-              style={styles.profileProto}
-              source={{ uri: 'https://media.licdn.com/dms/image/D4E03AQGeL9G0MYulLQ/profile-displayphoto-shrink_200_200/0/1699324249256?e=2147483647&v=beta&t=qPDmZCJdwLRzWraYIU9VBUJGs7gwCF4WeclrayNY3-s' }}
-            />
+        <TouchableOpacity style={{flex: 1, overflow: 'hidden'}} onPress={() => navigation.navigate("ProfileScreen", {userId: 87387283})} >
+          <View style={styles.profileContainer}>
+            <View style={styles.profilePhotoContainer}>
+              <Image 
+                style={styles.profileProto}
+                source={{ uri: 'https://media.licdn.com/dms/image/D4E03AQGeL9G0MYulLQ/profile-displayphoto-shrink_200_200/0/1699324249256?e=2147483647&v=beta&t=qPDmZCJdwLRzWraYIU9VBUJGs7gwCF4WeclrayNY3-s' }}
+              />
+            </View>
+            <View style={styles.profileInfo}>
+              <Text style={styles.profileName} numberOfLines={1} >Pedro Henrique Ferreira Silva Pedro Henrique Ferreira Silva</Text>
+              <Text style={styles.profileCareer} numberOfLines={1}>Membro trainee</Text>
+            </View>
           </View>
-          <View style={styles.profileInfo}>
-            <Text style={styles.profileName} numberOfLines={1} >Pedro Henrique Ferreira Silva Pedro Henrique Ferreira Silva</Text>
-            <Text style={styles.profileCareer} numberOfLines={1}>Membro trainee</Text>
-          </View>
-        </View>
+        </TouchableOpacity>
         <Text style={styles.postDate}>há 2 min</Text>
       </View>
       <View style={styles.post}>
@@ -28,17 +30,20 @@ export default function Post() {
           />
         </View>
         <View style={styles.postTextContainer}>
-          <Text style={styles.postText}>Acabei de ser promovido a chefe de 
-cozinha no ICMC Júnior. (só sei fazer macarrão e carne moída)</Text>
+          <Text style={styles.postText}>Acabei de ser promovido a chefe de cozinha no ICMC Júnior. (só sei fazer macarrão e carne moída)</Text>
         </View>
       </View>
       <View style={styles.footer}>
-        <TouchableHighlight style={styles.likeButton}>
-          <Feather name="thumbs-up" size={25} color="#0168BC" />
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.commentsButton}>
-          <Text style={styles.commentsText}>Comentários</Text>
-        </TouchableHighlight>
+        <TouchableOpacity>
+          <View style={styles.likeButton}>
+            <Feather name="thumbs-up" size={25} color="#0168BC" />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("CommentsScreen", { postId: 3626382 })}>
+          <View style={styles.commentsButton}>
+            <Text style={styles.commentsText}>Comentários</Text>
+          </View>
+        </TouchableOpacity> 
       </View>
     </View>
   );
@@ -47,7 +52,7 @@ cozinha no ICMC Júnior. (só sei fazer macarrão e carne moída)</Text>
 const styles = StyleSheet.create({
   container: {
     borderBottomWidth: 1,
-    borderColor: '#bbb',
+    borderColor: '#ddd',
   },
   header: {
     width: '100%',
@@ -62,19 +67,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     flex: 1,
-    overflow: 'hidden'
   },
   profilePhotoContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
   },
   profileProto: {
     flex: 1,
-    borderRadius: 20,
+    borderRadius: 24,
   },
   profileInfo: {
-    height: 40,
+    height: 48,
     justifyContent: 'space-between',
   },
   profileName: {

@@ -6,7 +6,7 @@ export default function Home({ navigation }) {
     <View style={styles.container}>
       <Button 
         title="Go to Profile"
-        onPress={() => navigation.navigate('Meu perfil')}
+        onPress={() => navigation.navigate('MyProfileScreen')}
       />
     </View>
   )
