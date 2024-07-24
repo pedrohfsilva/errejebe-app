@@ -1,25 +1,24 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
+import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 // Assuming you have the image in your project's assets folder
 const luisFoto = require('../../assets/luisfoto.jpeg');
 
-export default function Notification() {
+export default function Notification({ navigation, notificationId }) {
   return (
     <View style={styles.container}>
-      <View style={styles.profileContainer}>
-        <View style={styles.profilePhotoContainer}>
-          <Image
-            style={styles.profilePhoto}
-            source={luisFoto}
-          />
-        </View>
-        <View style={styles.profileInfo}>
-          <Text style={styles.profileName}>Luis</Text>
-          <Text style={styles.notificationText}>curtiu sua postagem</Text>
-        </View>
+      <View style={styles.notificationContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen", {userId: 3720738})}>
+          <View style={styles.profilePhotoContainer}>
+            <Image
+              style={styles.profilePhoto}
+              source={luisFoto}
+            />
+          </View>
+        </TouchableOpacity>
+        <Text style={styles.notificationText}>Elon Musk comentou "ufheifheo hfihi hfioeh hfie fhihf ihefh ihfeifhe ihfioh ihfiheifhio hfioeh ioefhioehfiohe iehifehi"</Text>
       </View>
-      <Text style={styles.timeText}>há 2 min</Text>
+      <Text style={styles.timeNotification}>há 2 min</Text>
     </View>
   );
 }
@@ -27,37 +26,30 @@ export default function Notification() {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    padding: 15,
+    paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    alignItems: 'center',
+    borderBottomColor: '#ddd',
+    alignItems: 'flex-start',
+    gap: 10,
   },
-  profileContainer: {
+  notificationContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     flex: 1,
-  },
-  profilePhotoContainer: {
-    marginRight: 10,
+    gap: 10,
   },
   profilePhoto: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-  profileInfo: {
-    flex: 1,
-  },
-  profileName: {
-    fontWeight: 'bold',
-    fontSize: 16,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
   },
   notificationText: {
-    fontSize: 14,
-    color: '#555',
+    fontSize: 18,
+    color: '#444',
+    flex: 1,
   },
-  timeText: {
-    color: '#999',
-    fontSize: 12,
+  timeNotification: {
+    color: '#444',
+    fontSize: 15,
   },
 });
