@@ -34,34 +34,39 @@ function TabRoutes() {
         headerTitleAlign: 'center'
       }}
     >
-      <Tab.Screen name="Inicial" component={HomeScreen} options={{
+      <Tab.Screen name="HomeScreen" component={HomeScreen} options={{
         tabBarIcon: ({ size, color }) => (
           <Feather name="home" size={size} color={color}/>
-        )
+        ),
+        headerTitle: 'Inicial'
       }}/>
 
-      <Tab.Screen name="Procurar" component={SearchScreen} options={{
+      <Tab.Screen name="SearchScreen" component={SearchScreen} options={{
         tabBarIcon: ({ size, color }) => (
           <Feather name="search" size={size} color={color}/>
-        )
+        ),
+        headerTitle: 'Procurar'
       }}/>
 
-      <Tab.Screen name="Criar postagem" component={CreateScreen} options={{
+      <Tab.Screen name="CreateScreen" component={CreateScreen} options={{
         tabBarIcon: ({ size, color }) => (
           <Feather name="plus-circle" size={size} color={color}/>
-        )
+        ),
+        headerTitle: 'Criar postagem'
       }}/>
 
-      <Tab.Screen name="Notificações" component={NotificationsScreen} options={{
+      <Tab.Screen name="NotificationsScreen" component={NotificationsScreen} options={{
         tabBarIcon: ({ size, color }) => (
           <Feather name="bell" size={size} color={color}/>
-        )
+        ),
+        headerTitle: 'Notificações'
       }}/>
 
-      <Tab.Screen name="Meu perfil" component={MyProfileScreen} options={{
+      <Tab.Screen name="MyProfileScreen" component={MyProfileScreen} options={{
         tabBarIcon: ({ size, color }) => (
           <ProfilePhoto size={size} color={color} />
-        )
+        ),
+        headerTitle: 'Meu perfil'
       }}/>
     </Tab.Navigator>
   );
@@ -75,14 +80,14 @@ export function StackRoutes() {
         headerTitleAlign: 'center'
       }}
     >
-      <Stack.Screen name="TabRoutes" component={TabRoutes} options={{ headerShown: false }}/>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Redefinir senha" component={RecoverPasswordScreen} />
-      <Stack.Screen name="Registrar" component={RegisterScreen} />
-      <Stack.Screen name="Comentários" component={CommentsScreen} />
-      <Stack.Screen name="Ver perfil" component={ProfileScreen} />
-      <Stack.Screen name="Editar perfil" component={EditProfileScreen} />
-      <Stack.Screen name="Nova senha" component={NewPasswordScreen} />
+      <Stack.Screen name="TabRoutes" component={TabRoutes} options={{ headerShown: false }} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerTitle: 'Login' }} />
+      <Stack.Screen name="RecoverPasswordScreen" component={RecoverPasswordScreen} options={{ headerTitle: 'Redefinir senha' }} />
+      <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ headerTitle: 'Registrar' }} />
+      <Stack.Screen name="CommentsScreen" component={CommentsScreen} options={{ headerTitle: 'Comentários' }} />
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerTitle: 'Ver perfil' }} />
+      <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} options={{ headerTitle: 'Editar perfil' }} />
+      <Stack.Screen name="NewPasswordScreen" component={NewPasswordScreen} options={{ headerTitle: 'Nova senha' }} />
     </Stack.Navigator>
   );
 }
