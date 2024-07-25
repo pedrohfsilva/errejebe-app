@@ -25,6 +25,12 @@ export default function MyProfile({ navigation }) {
         <Post navigation={navigation} postId={938374} />
         <Post navigation={navigation} postId={938374} />
       </View>
+      <View>
+        <Button
+          title="Sair"
+          onPress={() => navigation.navigate('LoginScreen')}
+        />
+      </View>
     </ScrollView>
   )
 }
