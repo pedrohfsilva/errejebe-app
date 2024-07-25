@@ -1,33 +1,40 @@
+// PasswordInput.js
 import React from 'react';
-import {View, StyleSheet, TextInput} from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const TextInputPassword = () => {
-  const [number, onChangeNumber] = React.useState('');
-
+const PasswordInput = ({ style, ...props }) => {
   return (
-    <View>
+    <View style={[styles.container, style]}>
+      <Icon name="lock" size={20} color="gray" style={styles.icon} />
       <TextInput
         style={styles.input}
-        onChangeText={onChangeNumber}
-        value={number}
         placeholder="Senha"
-        keyboardType="numeric"
+        secureTextEntry
+        {...props}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    width: '100%',
-    margin: 12,
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: 'gray',
     borderWidth: 1,
-    padding: 20,
     borderRadius: 20,
+    paddingHorizontal: 10,
+    marginVertical: 10,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  input: {
+    flex: 1,
+    height: 40,
     color: '#444444',
-    borderColor: '#444444',
   },
 });
 
-export default TextInputPassword;
+export default PasswordInput;
