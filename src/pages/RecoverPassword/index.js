@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button } from 'react-native';
 import Logo from '../../components/Logo';
 import EmailInput from '../../components/EmailInput';
 
-export default function Login({ navigation }) {
+export default function Recover({ navigation }) {
   return (
     <View style={styles.container}>
       <Logo />
@@ -12,7 +12,7 @@ export default function Login({ navigation }) {
       <View style={styles.flexGrow} />
       <Button 
         title="Enviar e-mail de recuperação"
-        onPress={() => navigation.navigate('HomeScreen')}
+        // onPress={() => navigation.navigate('HomeScreen')}
         style={styles.sendButton}
       />
       <Text style={styles.linkText}

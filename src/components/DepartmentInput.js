@@ -2,14 +2,14 @@ import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-const PasswordInput = ({ style, ...props }) => {
+
+const DepartmentInput = ({ style, ...props }) => {
   return (
     <View style={[styles.container, style]}>
-      <Feather name="lock" size={20} color="gray" style={styles.icon} />
+      <Feather name="briefcase" size={20} color="gray" style={styles.icon} />
       <TextInput
         style={styles.input}
-        placeholder="Senha"
-        secureTextEntry
+        placeholder="Área na empresa"
         {...props}
       />
     </View>
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 10,
     marginVertical: 10,
-    width:'100%',
+    width: '100%',
   },
   icon: {
     marginRight: 10,
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PasswordInput;
+export default DepartmentInput;

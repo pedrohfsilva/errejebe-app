@@ -2,13 +2,13 @@ import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-const PasswordInput = ({ style, ...props }) => {
+const ConfirmPasswordInput = ({ style, ...props }) => {
   return (
     <View style={[styles.container, style]}>
       <Feather name="lock" size={20} color="gray" style={styles.icon} />
       <TextInput
         style={styles.input}
-        placeholder="Senha"
+        placeholder="Confirmar senha"
         secureTextEntry
         {...props}
       />
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PasswordInput;
+export default ConfirmPasswordInput;

@@ -1,12 +1,11 @@
-// EmailInput.js
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Feather } from '@expo/vector-icons';
 
 const EmailInput = ({ style, ...props }) => {
   return (
     <View style={[styles.container, style]}>
-      <Icon name="email" size={20} color="gray" style={styles.icon} />
+      <Feather name="mail" size={20} color="gray" style={styles.icon} />
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -25,6 +24,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 10,
     marginVertical: 10,
+    width:'100%',
   },
   icon: {
     marginRight: 10,
