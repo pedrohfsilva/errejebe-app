@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Logo from '../../components/Logo';
 import EmailInput from '../../components/EmailInput';
 import PasswordInput from '../../components/PasswordInput';
+import Button from '../../components/Button';
 
 export default function Login({ navigation }) {
   return (
@@ -13,9 +14,8 @@ export default function Login({ navigation }) {
       <PasswordInput />
       <View style={styles.flexGrow} />
       <Button 
-        title="Entrar"
-        onPress={() => navigation.navigate('HomeScreen')}
-        style={styles.loginButton}
+        buttonText="Entrar"
+        handlePress={() => navigation.navigate('HomeScreen')}
       />
       <Text style={styles.text}>Ainda não tem uma conta?
         <Text style={styles.linkText}
@@ -43,24 +43,16 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     color: '#444444',
     textAlign: 'center',
+    margin: 10,
   },
   linkText: {
     fontSize: 16,
     fontWeight: 'regular',
     textDecorationLine: 'underline',
     color: 'blue',
-    
+    margin: 10,
   },
   flexGrow: {
-    flexGrow: 1,
-  },
-  loginButton: {
-    marginBottom: 20,
-    height: 40,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 20,
-    color: '#0168BC',
-    borderColor: '#0168BC',
+    flexGrow: 2,
   },
 });

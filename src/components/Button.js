@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { Feather } from '@expo/vector-icons'
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 export default function Button({ handlePress, buttonText }) {
   return (
@@ -14,14 +13,17 @@ export default function Button({ handlePress, buttonText }) {
 
 const styles = StyleSheet.create({
   button: {
-    width: '100%',
+    height: 40,
+    width: 300,
     backgroundColor: '#0168BC',
-    borderRadius: 100,
-    paddingVertical: 15,
+    borderRadius: 20,
     alignItems: 'center',
+    justifyContent: 'center',
+    margin: 20,
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: '20',
+    fontWeight: 'bold',
     color: '#fff',
   }
 });

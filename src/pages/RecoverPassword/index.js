@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Logo from '../../components/Logo';
 import EmailInput from '../../components/EmailInput';
+import Button from "../../components/Button";
 
 export default function Recover({ navigation }) {
   return (
@@ -11,9 +12,7 @@ export default function Recover({ navigation }) {
       <EmailInput />
       <View style={styles.flexGrow} />
       <Button 
-        title="Enviar e-mail de recuperação"
-        // onPress={() => navigation.navigate('HomeScreen')}
-        style={styles.sendButton}
+        buttonText="Enviar e-mail de recuperação"
       />
       <Text style={styles.linkText}
           onPress={() => navigation.navigate('LoginScreen')}>
