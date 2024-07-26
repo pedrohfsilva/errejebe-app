@@ -7,11 +7,15 @@ import EmailInput from '../../components/EmailInput';
 import PasswordInput from '../../components/PasswordInput';
 import ConfirmPasswordInput from '../../components/ConfirmPasswordInput';
 import Button from "../../components/Button";
+import NewProfilePhoto from "../../components/NewProfilePhoto";
 
 export default function Register({ navigation }) {
   return (
     <View style={styles.container}>
       <Logo />
+      <NewProfilePhoto
+        handlePress={() => navigation.navigate('RegisterScreen')}
+      />
       <NameInput />
       <DepartmentInput />
       <EmailInput />
