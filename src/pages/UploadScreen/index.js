@@ -23,7 +23,7 @@ export default function Upload({ navigation }) {
   return (
     <View style={styles.container}>
       {image && <Image source={{ uri: image }} style={styles.image} />}
-      <Logo />
+      {/* <Logo /> */}
       <View style={styles.buttonsView}>
         <Text style={styles.title}>Upload de Foto</Text>
         <Text style={styles.subTitle}>Escolha sua foto de perfil</Text>
@@ -43,6 +43,12 @@ export default function Upload({ navigation }) {
           <Button 
             buttonText="Cancelar"
             handlePress={() => setImage('')}
+          />
+        </View>
+        <View style={styles.button}>
+          <Button 
+            buttonText="Enviar"
+            handlePress={''}
           />
         </View>
       </View>
@@ -85,7 +91,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     alignSelf: 'center',
-    marginVertical: 20,
+    margin: 30,
     borderRadius: 100,
   },
 });
