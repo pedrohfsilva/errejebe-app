@@ -1,16 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from 'react-native';
 import Logo from '../../components/Logo';
 import Button from "../../components/Button";
-import { Feather } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function Upload({ navigation }) {
+  const [image, setImage] = useState('');
+
+  const handleImagePickerPress = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Logo />       
+      <Logo />
       <View style={styles.buttonsView}>
-      <Text style={styles.title}>Upload de Foto</Text>
-      <Text style={styles.subTitle}>Escolha sua foto de perfil</Text>
+        <Text style={styles.title}>Upload de Foto</Text>
+        <Text style={styles.subTitle}>Escolha sua foto de perfil</Text>
         <View style={styles.button}>
           <Button 
             buttonText="Tirar foto"
@@ -20,13 +35,13 @@ export default function Upload({ navigation }) {
         <View style={styles.button}>
           <Button 
             buttonText="Abrir Galeria"
-            handlePress={() => navigation.navigate('UploadScreen')}
+            handlePress={handleImagePickerPress}
           />
         </View>
         <View style={styles.button}>
           <Button 
             buttonText="Cancelar"
-            handlePress={() => navigation.navigate('UploadScreen')}
+            handlePress={() => setImage('')}
           />
         </View>
       </View>
@@ -56,7 +71,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   buttonsView: {
-    flex: 2,
+    flex: 1,
     borderWidth: 1,
     borderColor: '#0168BC',
     borderRadius: 20,
