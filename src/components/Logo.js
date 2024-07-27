@@ -35,8 +35,8 @@ const Logo = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   errejebe: {
     fontSize: 30, // text size

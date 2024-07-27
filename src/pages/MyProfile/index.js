@@ -1,6 +1,6 @@
-import React from "react";
-import  { View, Text, StyleSheet, Button, ScrollView, Image } from 'react-native';
-
+import React from "react"
+import  { View, Text, StyleSheet, ScrollView, Image } from 'react-native'
+import Button from '../../components/Button'
 import Post from '../../components/Post'
 
 // Assuming you have the image in your project's assets folder
@@ -27,8 +27,8 @@ export default function MyProfile({ navigation }) {
       </View>
       <View>
         <Button
-          title="Sair"
-          onPress={() => navigation.navigate('LoginScreen')}
+          buttonText="Sair"
+          handlePress={() => navigation.navigate('LoginScreen')}
         />
       </View>
     </ScrollView>

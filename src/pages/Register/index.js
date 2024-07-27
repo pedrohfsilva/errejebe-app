@@ -7,15 +7,20 @@ import EmailInput from '../../components/EmailInput';
 import PasswordInput from '../../components/PasswordInput';
 import ConfirmPasswordInput from '../../components/ConfirmPasswordInput';
 import Button from "../../components/Button";
-import NewProfilePhoto from "../../components/NewProfilePhoto";
+import EditButton from '../../components/EditButton';
+import { Feather } from '@expo/vector-icons';
 
 export default function Register({ navigation }) {
   return (
     <View style={styles.container}>
       <Logo />
-      <NewProfilePhoto
-        handlePress={() => navigation.navigate('RegisterScreen')}
-      />
+  
+        <View style={styles.editPhoto}>
+          <Feather name="user" size={65} color="#888888" style={styles.iconUser} />
+          <EditButton style={styles.editPhotoButton}/> 
+        </View>  
+         
+
       <NameInput />
       <DepartmentInput />
       <EmailInput />
@@ -40,8 +45,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
     backgroundColor: '#ffffff',
   },
@@ -59,6 +62,23 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     color: 'blue',
     margin: 10,    
+  },
+  editPhoto: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconUser: {
+    borderWidth: 1,
+    borderColor: '#d9d9d9',
+    borderRadius: 50,
+    backgroundColor: '#d9d9d9',
+    width: 100,
+    height: 100,
+    padding: 16,  
+  },
+  editPhotoButton:{
+
   },
   flexGrow: {
     flexGrow: 2,
