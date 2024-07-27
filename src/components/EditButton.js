@@ -4,8 +4,8 @@ import { Feather } from '@expo/vector-icons';
 
 export default function Upload({ handlePress }) {
     return (
-    <TouchableOpacity onPress={handlePress}>
-      <View style={styles.iconEdit}>
+    <TouchableOpacity style={styles.container} onPress={handlePress}>
+      <View>
         <Feather name="edit-2" size={16} color="#fff" />
       </View>
     </TouchableOpacity>
@@ -13,9 +13,8 @@ export default function Upload({ handlePress }) {
 }
 
 const styles = StyleSheet.create({
-
-    iconEdit:{
-        borderRadius: 20,
+    container: {
+      borderRadius: 20,
         backgroundColor: '#0168BC',
         width: 30,
         height: 30,
