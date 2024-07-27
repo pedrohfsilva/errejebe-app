@@ -17,7 +17,9 @@ export default function Register({ navigation }) {
   
         <View style={styles.editPhoto}>
           <Feather name="user" size={65} color="#888888" style={styles.iconUser} />
-          <EditButton style={styles.editPhotoButton}/> 
+          <EditButton 
+          handlePress={() => navigation.navigate('UploadScreen')}
+          style={styles.editPhotoButton}/> 
         </View>  
          
 

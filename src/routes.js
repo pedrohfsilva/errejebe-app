@@ -14,6 +14,7 @@ import LoginScreen from "./pages/Login";
 import RecoverPasswordScreen from "./pages/RecoverPassword";
 import NewPasswordScreen from "./pages/NewPassword";
 import RegisterScreen from "./pages/Register";
+import UploadScreen from "./pages/UploadScreen";
 
 import ProfilePhoto from "./components/ProfilePhoto";
 
@@ -89,6 +90,7 @@ export function StackRoutes() {
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerTitle: 'Ver perfil' }} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} options={{ headerTitle: 'Editar perfil' }} />
       <Stack.Screen name="NewPasswordScreen" component={NewPasswordScreen} options={{ headerTitle: 'Nova senha' }} />
+      <Stack.Screen name="UploadScreen" component={UploadScreen} options={{ headerTitle: 'Upload' }} />
     </Stack.Navigator>
   );
 }

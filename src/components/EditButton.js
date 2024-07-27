@@ -1,13 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
 
-export default function Upload() {
+export default function Upload({ handlePress }) {
     return (
-    <TouchableOpacity onPress={() => {
-      console.log('uhul') // camera
-    }} >
+    <TouchableOpacity onPress={handlePress}>
       <View style={styles.iconEdit}>
         <Feather name="edit-2" size={16} color="#fff" />
       </View>
