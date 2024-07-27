@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import Logo from '../../components/Logo';
 import Button from "../../components/Button";
 import * as ImagePicker from 'expo-image-picker';
@@ -22,12 +22,13 @@ export default function Upload({ navigation }) {
 
   return (
     <View style={styles.container}>
+      {image && <Image source={{ uri: image }} style={styles.image} />}
       <Logo />
       <View style={styles.buttonsView}>
         <Text style={styles.title}>Upload de Foto</Text>
         <Text style={styles.subTitle}>Escolha sua foto de perfil</Text>
         <View style={styles.button}>
-          <Button 
+          <Button
             buttonText="Tirar foto"
             handlePress={() => navigation.navigate('UploadScreen')}
           />
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   buttonsView: {
-    flex: 1,
+    flex: 2,
     borderWidth: 1,
     borderColor: '#0168BC',
     borderRadius: 20,
@@ -79,5 +80,12 @@ const styles = StyleSheet.create({
   },
   button: {
     marginVertical: 10,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    alignSelf: 'center',
+    marginVertical: 20,
+    borderRadius: 100,
   },
 });
