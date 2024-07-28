@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect} from "react"
 import { View, Text, StyleSheet, Image } from 'react-native'
 import Logo from '../../components/Logo'
 import NameInput from "../../components/NameInput"
@@ -10,18 +10,30 @@ import Button from "../../components/Button"
 import EditButton from '../../components/EditButton'
 import { Feather } from '@expo/vector-icons'
 
-export default function Register({ navigation }) {
+export default function Register({ navigation, route }) {
+  const [image, setImage] = useState('')
+
+  useEffect(() => {
+    if (route.params?.image) {
+      setImage(route.params.image)
+    }
+  }, [route.params?.image])
+
   return (
     <View style={styles.container}>
       <Logo />
+      {image ? (
+        <Image source={{ uri: image }} style={styles.uploadedPhoto} />
+      ) : (
         <View style={styles.editPhoto}>
           <Feather name="user" size={80} color="#888888" style={styles.iconUser} />
           <EditButton
             color={"#FFFFFF"}
             backgroundColor={"#0168BC"}
-            handlePress={() => navigation.navigate('UploadScreen')}
+            handlePress={() => navigation.navigate('UploadScreen', { from: 'RegisterScreen' })}
             />
         </View>
+      )}
       <NameInput />
       <DepartmentInput />
       <EmailInput />
@@ -73,6 +85,11 @@ const styles = StyleSheet.create({
   iconUser: {
     fontSize: 50,
     marginHorizontal: 25,
+  },
+  uploadedPhoto: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
   flexGrow: {
     flex: 1,

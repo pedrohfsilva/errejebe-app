@@ -1,11 +1,10 @@
 import React, { useState } from "react"
 import { View, Text, StyleSheet, Image } from 'react-native'
-import Logo from '../../components/Logo'
 import Button from "../../components/Button"
 import * as ImagePicker from 'expo-image-picker'
 
-export default function Upload({ navigation }) {
-  const [image, setImage] = useState('');
+export default function Upload({ navigation, route }) {
+  const [image, setImage] = useState('')
 
   const handleImagePickerPress = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -13,17 +12,24 @@ export default function Upload({ navigation }) {
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
-    });
+    })
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setImage(result.assets[0].uri)
+    }
+  }
+
+  const handleSendPress = () => {
+    console.log('rota')
+    console.log(route.params?.from)
+    if (route.params?.from) {
+      navigation.navigate(route.params.from, { image })
     }
   }
 
   return (
     <View style={styles.container}>
       {image && <Image source={{ uri: image }} style={styles.image} />}
-      {/* <Logo /> */}
       <View style={styles.buttonsView}>
         <Text style={styles.title}>Upload de Foto</Text>
         <Text style={styles.subTitle}>Escolha sua foto de perfil</Text>
@@ -48,7 +54,7 @@ export default function Upload({ navigation }) {
         <View style={styles.button}>
           <Button 
             buttonText="Enviar"
-            handlePress={''}
+            handlePress={handleSendPress}
           />
         </View>
       </View>

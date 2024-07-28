@@ -17,7 +17,6 @@ import RegisterScreen from "./pages/Register"
 import UploadScreen from "./pages/UploadScreen"
 
 import ProfilePhoto from "./components/ProfilePhoto"
-
 import { Feather } from '@expo/vector-icons'
 
 const Tab = createBottomTabNavigator();
