@@ -18,7 +18,7 @@ export default function MyProfile({ navigation }) {
           />
           <View style={styles.editButton}>
             <EditButton
-              handlePress={''}
+              handlePress={() => navigation.navigate('EditProfileScreen')}
               color={"#0168BC"}
               backgroundColor={"#EEEEEE"}/>
           </View>

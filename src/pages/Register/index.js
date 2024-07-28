@@ -19,8 +19,9 @@ export default function Register({ navigation }) {
           <EditButton
             color={"#FFFFFF"}
             backgroundColor={"#0168BC"}
-            handlePress={() => navigation.navigate('UploadScreen')}/>
-      </View>
+            handlePress={() => navigation.navigate('UploadScreen')}
+            />
+        </View>
       <NameInput />
       <DepartmentInput />
       <EmailInput />
