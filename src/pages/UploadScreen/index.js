@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Image } from 'react-native';
-import Logo from '../../components/Logo';
-import Button from "../../components/Button";
-import * as ImagePicker from 'expo-image-picker';
+import React, { useState } from "react"
+import { View, Text, StyleSheet, Image } from 'react-native'
+import Logo from '../../components/Logo'
+import Button from "../../components/Button"
+import * as ImagePicker from 'expo-image-picker'
 
 export default function Upload({ navigation }) {
   const [image, setImage] = useState('');
@@ -18,7 +18,7 @@ export default function Upload({ navigation }) {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -94,4 +94,4 @@ const styles = StyleSheet.create({
     margin: 30,
     borderRadius: 100,
   },
-});
+})

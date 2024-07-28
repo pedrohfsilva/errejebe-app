@@ -1,22 +1,22 @@
-import React from "react";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from "react"
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createStackNavigator } from '@react-navigation/stack'
 
-import HomeScreen from "./pages/Home";
-import CommentsScreen from "./pages/Comments";
-import SearchScreen from "./pages/Search";
-import CreateScreen from "./pages/Create";
-import NotificationsScreen from "./pages/Notifications";
-import MyProfileScreen from "./pages/MyProfile";
-import ProfileScreen from "./pages/Profile";
-import EditProfileScreen from "./pages/EditProfile";
-import LoginScreen from "./pages/Login";
-import RecoverPasswordScreen from "./pages/RecoverPassword";
-import NewPasswordScreen from "./pages/NewPassword";
-import RegisterScreen from "./pages/Register";
-import UploadScreen from "./pages/UploadScreen";
+import HomeScreen from "./pages/Home"
+import CommentsScreen from "./pages/Comments"
+import SearchScreen from "./pages/Search"
+import CreateScreen from "./pages/Create"
+import NotificationsScreen from "./pages/Notifications"
+import MyProfileScreen from "./pages/MyProfile"
+import ProfileScreen from "./pages/Profile"
+import EditProfileScreen from "./pages/EditProfile"
+import LoginScreen from "./pages/Login"
+import RecoverPasswordScreen from "./pages/RecoverPassword"
+import NewPasswordScreen from "./pages/NewPassword"
+import RegisterScreen from "./pages/Register"
+import UploadScreen from "./pages/UploadScreen"
 
-import ProfilePhoto from "./components/ProfilePhoto";
+import ProfilePhoto from "./components/ProfilePhoto"
 
 import { Feather } from '@expo/vector-icons'
 
@@ -71,7 +71,7 @@ function TabRoutes() {
         headerTitle: 'Meu perfil'
       }}/>
     </Tab.Navigator>
-  );
+  )
 }
 
 export function StackRoutes() {
@@ -92,5 +92,5 @@ export function StackRoutes() {
       <Stack.Screen name="NewPasswordScreen" component={NewPasswordScreen} options={{ headerTitle: 'Nova senha' }} />
       <Stack.Screen name="UploadScreen" component={UploadScreen} options={{ headerTitle: 'Upload' }} />
     </Stack.Navigator>
-  );
+  )
 }

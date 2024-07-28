@@ -1,14 +1,14 @@
-import React from "react";
-import { View, Text, StyleSheet, Image } from 'react-native';
-import Logo from '../../components/Logo';
-import NameInput from "../../components/NameInput";
-import DepartmentInput from "../../components/DepartmentInput";
-import EmailInput from '../../components/EmailInput';
-import PasswordInput from '../../components/PasswordInput';
-import ConfirmPasswordInput from '../../components/ConfirmPasswordInput';
-import Button from "../../components/Button";
-import EditButton from '../../components/EditButton';
-import { Feather } from '@expo/vector-icons';
+import React from "react"
+import { View, Text, StyleSheet, Image } from 'react-native'
+import Logo from '../../components/Logo'
+import NameInput from "../../components/NameInput"
+import DepartmentInput from "../../components/DepartmentInput"
+import EmailInput from '../../components/EmailInput'
+import PasswordInput from '../../components/PasswordInput'
+import ConfirmPasswordInput from '../../components/ConfirmPasswordInput'
+import Button from "../../components/Button"
+import EditButton from '../../components/EditButton'
+import { Feather } from '@expo/vector-icons'
 
 export default function Register({ navigation }) {
   return (
@@ -16,7 +16,9 @@ export default function Register({ navigation }) {
       <Logo />
         <View style={styles.editPhoto}>
           <Feather name="user" size={80} color="#888888" style={styles.iconUser} />
-          <EditButton 
+          <EditButton
+            color={"#FFFFFF"}
+            backgroundColor={"#0168BC"}
             handlePress={() => navigation.navigate('UploadScreen')}/>
       </View>
       <NameInput />
@@ -36,7 +38,7 @@ export default function Register({ navigation }) {
         </Text>
       </Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -74,4 +76,4 @@ const styles = StyleSheet.create({
   flexGrow: {
     flex: 1,
   },
-});
+})

@@ -1,8 +1,8 @@
-import React from "react";
-import { View, Text, StyleSheet } from 'react-native';
-import Logo from '../../components/Logo';
-import EmailInput from '../../components/EmailInput';
-import Button from "../../components/Button";
+import React from "react"
+import { View, Text, StyleSheet } from 'react-native'
+import Logo from '../../components/Logo'
+import EmailInput from '../../components/EmailInput'
+import Button from "../../components/Button"
 
 export default function Recover({ navigation }) {
   return (
@@ -19,7 +19,7 @@ export default function Recover({ navigation }) {
         Fazer login
       </Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
     color: '#0168BC',
     borderColor: '#0168BC',
   },
-});
+})

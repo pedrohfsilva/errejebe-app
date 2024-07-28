@@ -1,10 +1,10 @@
-import React from "react";
-import  { View, Text, StyleSheet, Button, ScrollView, Image } from 'react-native';
+import React from "react"
+import  { View, Text, StyleSheet, Button, ScrollView, Image } from 'react-native'
 
 import Post from '../../components/Post'
 
 // Assuming you have the image in your project's assets folder
-const luisFoto = require('../../../assets/luisfoto.jpeg');
+const luisFoto = require('../../../assets/luisfoto.jpeg')
 
 export default function Profile({ navigation, route }) {
   const { userId } = route.params;

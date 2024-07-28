@@ -2,6 +2,7 @@ import React from "react"
 import  { View, Text, StyleSheet, ScrollView, Image } from 'react-native'
 import Button from '../../components/Button'
 import Post from '../../components/Post'
+import EditButton from '../../components/EditButton'
 
 // Assuming you have the image in your project's assets folder
 const luisFoto = require('../../../assets/luisfoto.jpeg');
@@ -15,6 +16,12 @@ export default function MyProfile({ navigation }) {
             style={styles.profilePhoto}
             source={luisFoto}
           />
+          <View style={styles.editButton}>
+            <EditButton
+              handlePress={''}
+              color={"#0168BC"}
+              backgroundColor={"#EEEEEE"}/>
+          </View>
         </View>
         <Text style={styles.profileName} numberOfLines={1}>Luíz Henrique</Text>
         <Text style={styles.profileInfo} numberOfLines={1}>Diretor de compras</Text>
@@ -53,6 +60,8 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 60,
     marginBottom: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   profilePhoto: {
     width: '100%',
@@ -69,6 +78,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#444',
     marginBottom: 20,
+  },
+  editButton: {
+    position: 'absolute',
+    left: 150,
+    top: 0,
   },
   publicationsText: {
     fontSize: 18,

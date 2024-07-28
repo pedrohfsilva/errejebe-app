@@ -1,9 +1,9 @@
-import React from "react";
-import { View, Text, StyleSheet } from 'react-native';
-import Logo from '../../components/Logo';
-import EmailInput from '../../components/EmailInput';
-import PasswordInput from '../../components/PasswordInput';
-import Button from '../../components/Button';
+import React from "react"
+import { View, Text, StyleSheet } from 'react-native'
+import Logo from '../../components/Logo'
+import EmailInput from '../../components/EmailInput'
+import PasswordInput from '../../components/PasswordInput'
+import Button from '../../components/Button'
 
 export default function Login({ navigation }) {
   return (
@@ -25,7 +25,7 @@ export default function Login({ navigation }) {
       </Text>
       <Text style={styles.linkText} onPress={() => navigation.navigate('RecoverPasswordScreen')}>Esqueci minha senha</Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -55,4 +55,4 @@ const styles = StyleSheet.create({
   flexGrow: {
     flexGrow: 2,
   },
-});
+})

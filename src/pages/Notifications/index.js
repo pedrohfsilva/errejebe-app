@@ -1,5 +1,5 @@
-import React from "react";
-import  { View, Text, StyleSheet, Button, ScrollView } from 'react-native';
+import React from "react"
+import  { View, Text, StyleSheet, Button, ScrollView } from 'react-native'
 
 import Notification from '../../components/Notification'
 

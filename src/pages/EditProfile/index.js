@@ -1,5 +1,5 @@
-import React from "react";
-import  { View, Text, StyleSheet, Button } from 'react-native';
+import React from "react"
+import  { View, Text, StyleSheet, Button } from 'react-native'
 
 export default function EditProfile({ navigation }) {
   return (

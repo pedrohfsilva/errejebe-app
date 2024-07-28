@@ -1,8 +1,8 @@
-import { useState } from "react";
-import  { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView } from 'react-native';
+import { useState } from "react"
+import  { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 
-import Button from "../../components/Button";
+import Button from "../../components/Button"
 
 export default function Home({ navigation }) {
   function handleLoadImage() {

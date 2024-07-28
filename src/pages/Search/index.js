@@ -1,11 +1,11 @@
-import { useState } from "react";
-import  { View, ScrollView, Text, StyleSheet, TextInput } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { useState } from "react"
+import  { View, ScrollView, Text, StyleSheet, TextInput } from 'react-native'
+import { Feather } from '@expo/vector-icons'
 
-import ProfileSearch from "../../components/ProfileSearch";
+import ProfileSearch from "../../components/ProfileSearch"
 
 export default function Search({ navigation, userId }) {
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState('')
 
   return (
     <View style={styles.container}>
