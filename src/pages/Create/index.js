@@ -1,16 +1,9 @@
 import { useState, useEffect } from "react"
 import  { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView } from 'react-native'
 import { Feather } from '@expo/vector-icons'
-
 import Button from "../../components/Button"
 
 export default function Home({ navigation, route }) {
-  const [image, setImage] = useState('');
-  const [postText, setPostText] = useState('');
-
-  function handleLoadImage() {
-    navigation.navigate('UploadScreen', { from: 'CreateScreen' });
-  }
 
   function handlePublish() {
     if(postText == '') {
@@ -19,6 +12,9 @@ export default function Home({ navigation, route }) {
       alert("Publicado: " + postText);
     }
   }
+
+  const [postText, setPostText] = useState('')
+  const [image, setImage] = useState('')
 
   useEffect(() => {
     if (route.params?.image) {
@@ -41,6 +37,9 @@ export default function Home({ navigation, route }) {
             <Text style={styles.profileCareer} numberOfLines={1}>Membro trainee</Text>
           </View>
         </View>
+        {image ? (
+        <Image source={{ uri: image }} style={styles.uploadedPhoto} />
+        ) : (
         <View style={styles.loadImageContainer}>
           {image == '' ? (
               <TouchableOpacity onPress={handleLoadImage}>
@@ -56,6 +55,7 @@ export default function Home({ navigation, route }) {
             />
             )}
         </View>
+        )}
         <View style={styles.postTextInputContainer}>
           <TextInput 
             style={styles.postTextInput} 
@@ -67,7 +67,9 @@ export default function Home({ navigation, route }) {
         </View>
       </ScrollView>
       <View style={styles.buttonContainer} >
-        <Button buttonText="Publicar" handlePress={handlePublish} />
+        <Button
+          buttonText="Publicar"
+          handlePress={handlePublish} />
       </View>
     </View>
   )
@@ -145,10 +147,11 @@ const styles = StyleSheet.create({
     color: '#222',
   },
   buttonContainer: {
-    width: '100%',
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    position: 'absolute',
-    bottom: 0,
-  }
+    flex: 0.5,
+  },
+  uploadedPhoto: {
+    aspectRatio: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })
