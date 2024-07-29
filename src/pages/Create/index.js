@@ -1,12 +1,15 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import  { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 
 import Button from "../../components/Button"
 
-export default function Home({ navigation }) {
+export default function Home({ navigation, route }) {
+  const [image, setImage] = useState('');
+  const [postText, setPostText] = useState('');
+
   function handleLoadImage() {
-    alert("Carregar imagem");
+    navigation.navigate('UploadScreen', { from: 'CreateScreen' });
   }
 
   function handlePublish() {
@@ -17,7 +20,11 @@ export default function Home({ navigation }) {
     }
   }
 
-  const [postText, setPostText] = useState('');
+  useEffect(() => {
+    if (route.params?.image) {
+      setImage(route.params.image)
+    }
+  }, [route.params?.image])
 
   return (
     <View style={styles.container}>
@@ -35,12 +42,19 @@ export default function Home({ navigation }) {
           </View>
         </View>
         <View style={styles.loadImageContainer}>
-          <TouchableOpacity onPress={handleLoadImage}>
-            <View style={styles.loadImageButton}>
-              <Feather name="plus-circle" size={60} color="#0168BCbb" />
-              <Text style={styles.loadImageText}>Carregar imagem</Text>
-            </View>
-          </TouchableOpacity>
+          {image == '' ? (
+              <TouchableOpacity onPress={handleLoadImage}>
+                <View style={styles.loadImageButton}>
+                  <Feather name="plus-circle" size={60} color="#0168BCbb" />
+                  <Text style={styles.loadImageText}>Carregar imagem</Text>
+                </View>
+              </TouchableOpacity>
+          ) : (
+            <Image
+              style={styles.postImage}
+              source={{ uri: image }}
+            />
+            )}
         </View>
         <View style={styles.postTextInputContainer}>
           <TextInput 
@@ -113,6 +127,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#0168BCbb'
+  },
+  postImage: {
+    flex: 1,
   },
   postTextInputContainer: {
     width: '100%',
