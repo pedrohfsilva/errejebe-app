@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
     height: 200,
     alignSelf: 'center',
     margin: 30,
-    borderRadius: 100,
+    // borderRadius: 100,
   },
 })

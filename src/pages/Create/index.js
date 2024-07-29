@@ -1,13 +1,9 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import  { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView } from 'react-native'
 import { Feather } from '@expo/vector-icons'
-
 import Button from "../../components/Button"
 
-export default function Home({ navigation }) {
-  function handleLoadImage() {
-    alert("Carregar imagem");
-  }
+export default function Home({ navigation, route }) {
 
   function handlePublish() {
     if(postText == '') {
@@ -17,7 +13,14 @@ export default function Home({ navigation }) {
     }
   }
 
-  const [postText, setPostText] = useState('');
+  const [postText, setPostText] = useState('')
+  const [image, setImage] = useState('')
+
+  useEffect(() => {
+    if (route.params?.image) {
+      setImage(route.params.image)
+    }
+  }, [route.params?.image])
 
   return (
     <View style={styles.container}>
@@ -34,14 +37,18 @@ export default function Home({ navigation }) {
             <Text style={styles.profileCareer} numberOfLines={1}>Membro trainee</Text>
           </View>
         </View>
+        {image ? (
+        <Image source={{ uri: image }} style={styles.uploadedPhoto} />
+        ) : (
         <View style={styles.loadImageContainer}>
-          <TouchableOpacity onPress={handleLoadImage}>
+          <TouchableOpacity onPress={() => navigation.navigate('UploadScreen', { from: 'CreateScreen' })}>
             <View style={styles.loadImageButton}>
               <Feather name="plus-circle" size={60} color="#0168BCbb" />
               <Text style={styles.loadImageText}>Carregar imagem</Text>
             </View>
           </TouchableOpacity>
         </View>
+        )}
         <View style={styles.postTextInputContainer}>
           <TextInput 
             style={styles.postTextInput} 
@@ -53,7 +60,9 @@ export default function Home({ navigation }) {
         </View>
       </ScrollView>
       <View style={styles.buttonContainer} >
-        <Button buttonText="Publicar" handlePress={handlePublish} />
+        <Button
+          buttonText="Publicar"
+          handlePress={handlePublish} />
       </View>
     </View>
   )
@@ -128,10 +137,11 @@ const styles = StyleSheet.create({
     color: '#222',
   },
   buttonContainer: {
-    width: '100%',
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    position: 'absolute',
-    bottom: 0,
-  }
+    flex: 0.5,
+  },
+  uploadedPhoto: {
+    aspectRatio: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })
