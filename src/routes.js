@@ -1,7 +1,7 @@
 import React from "react"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import { TouchableOpacity } from "react-native"
+import { TouchableOpacity, Text } from "react-native"
 
 import HomeScreen from "./pages/Home"
 import CommentsScreen from "./pages/Comments"
@@ -19,6 +19,8 @@ import UploadScreen from "./pages/UploadScreen"
 
 import ProfilePhoto from "./components/ProfilePhoto"
 import PublishButton from "./components/PublishButton"
+import ExitButton from "./components/ExitButton"
+import Logo from "./components/Logo"
 import { Feather } from '@expo/vector-icons'
 
 
@@ -42,7 +44,13 @@ function TabRoutes() {
         tabBarIcon: ({ size, color }) => (
           <Feather name="home" size={size} color={color}/>
         ),
-        headerTitle: 'Inicial'
+        headerLeft: () => (
+          <Text style={{ fontSize: 30, color: '#0168BC', fontWeight: 'bold', marginLeft: 20 }}>ERREJEBE</Text>
+        ),
+        headerRight: () => (
+          <ExitButton />
+        ),
+        headerTitle: ''
       }}/>
 
       <Tab.Screen name="SearchScreen" component={SearchScreen} options={{
