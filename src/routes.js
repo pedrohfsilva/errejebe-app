@@ -1,6 +1,7 @@
 import React from "react"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
+import { TouchableOpacity } from "react-native"
 
 import HomeScreen from "./pages/Home"
 import CommentsScreen from "./pages/Comments"
@@ -17,7 +18,9 @@ import RegisterScreen from "./pages/Register"
 import UploadScreen from "./pages/UploadScreen"
 
 import ProfilePhoto from "./components/ProfilePhoto"
+import PublishButton from "./components/PublishButton"
 import { Feather } from '@expo/vector-icons'
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -53,7 +56,8 @@ function TabRoutes() {
         tabBarIcon: ({ size, color }) => (
           <Feather name="plus-circle" size={size} color={color}/>
         ),
-        headerTitle: 'Criar postagem'
+        headerTitle: 'Criar postagem',
+        headerRight: () => <PublishButton />
       }}/>
 
       <Tab.Screen name="NotificationsScreen" component={NotificationsScreen} options={{

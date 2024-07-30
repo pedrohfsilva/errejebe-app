@@ -1,26 +1,39 @@
 import { useState, useEffect } from "react"
 import  { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView } from 'react-native'
 import { Feather } from '@expo/vector-icons'
-import Button from "../../components/Button"
+import PublishButton from "../../components/PublishButton"
 
 export default function Home({ navigation, route }) {
+  const [postText, setPostText] = useState('')
+  const [image, setImage] = useState('')
 
   function handlePublish() {
     if(postText == '') {
       alert("Escreva algo antes de publicar")
     } else {
+      setPostText('');
+      setImage('');
       alert("Publicado: " + postText);
     }
   }
 
-  const [postText, setPostText] = useState('')
-  const [image, setImage] = useState('')
+  function handleLoadImage() {
+    navigation.navigate('UploadScreen', { from: 'CreateScreen' })
+  }
 
   useEffect(() => {
     if (route.params?.image) {
       setImage(route.params.image)
     }
   }, [route.params?.image])
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <PublishButton handlePress={handlePublish} />
+      ),
+    });
+  }, [navigation, postText]);
 
   return (
     <View style={styles.container}>
@@ -37,25 +50,30 @@ export default function Home({ navigation, route }) {
             <Text style={styles.profileCareer} numberOfLines={1}>Membro trainee</Text>
           </View>
         </View>
-        {image ? (
-        <Image source={{ uri: image }} style={styles.uploadedPhoto} />
-        ) : (
+
         <View style={styles.loadImageContainer}>
           {image == '' ? (
-              <TouchableOpacity onPress={handleLoadImage}>
-                <View style={styles.loadImageButton}>
-                  <Feather name="plus-circle" size={60} color="#0168BCbb" />
-                  <Text style={styles.loadImageText}>Carregar imagem</Text>
+            <TouchableOpacity onPress={handleLoadImage}>
+              <View style={styles.loadImageButton}>
+                <Feather name="plus-circle" size={60} color="#0168BCbb" />
+                <Text style={styles.loadImageText}>Carregar imagem</Text>
+              </View>
+            </TouchableOpacity>
+            
+          ) : (
+            <>
+              <Image
+                style={styles.uploadedPhoto}
+                source={{ uri: image }}
+              />
+              <TouchableOpacity style={styles.removeImageButtonContainer} onPress={() => setImage('')}>
+                <View style={styles.removeImageButton}>
+                  <Feather name="trash-2" size={20} color="#fff" />
                 </View>
               </TouchableOpacity>
-          ) : (
-            <Image
-              style={styles.postImage}
-              source={{ uri: image }}
-            />
+            </>
             )}
         </View>
-        )}
         <View style={styles.postTextInputContainer}>
           <TextInput 
             style={styles.postTextInput} 
@@ -66,11 +84,6 @@ export default function Home({ navigation, route }) {
           />
         </View>
       </ScrollView>
-      <View style={styles.buttonContainer} >
-        <Button
-          buttonText="Publicar"
-          handlePress={handlePublish} />
-      </View>
     </View>
   )
 }
@@ -114,10 +127,11 @@ const styles = StyleSheet.create({
   },
   loadImageContainer: {
     width: '100%',
-    aspectRatio: 1.5,
+    aspectRatio: 1,
     backgroundColor: '#ddd',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   },
   loadImageButton: {
     padding: 10,
@@ -130,8 +144,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#0168BCbb'
   },
-  postImage: {
-    flex: 1,
+  uploadedPhoto: {
+    width: '100%',
+    height: '100%',
+  },
+  removeImageButtonContainer: {
+    position: 'absolute',
+    right: 20,
+    top: 20,
+  },
+  removeImageButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#0008',
   },
   postTextInputContainer: {
     width: '100%',
@@ -145,13 +173,5 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     fontSize: 20,
     color: '#222',
-  },
-  buttonContainer: {
-    flex: 0.5,
-  },
-  uploadedPhoto: {
-    aspectRatio: 1.5,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 })

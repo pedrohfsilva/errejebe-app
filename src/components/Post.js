@@ -26,11 +26,11 @@ export default function Post({ navigation, postId }) {
         <View style={styles.postImageContainer}>
           <Image 
             style={styles.postImage} 
-            source={{ uri: 'https://www.sabornamesa.com.br/media/k2/items/cache/665e96c29d55b13435d7a8d39deafe53_XL.jpg'}}
+            source={{ uri: 'https://saocarlos.usp.br/wp-content/uploads/2021/10/ICMC-abre-vagas-para-p%C3%B3s-gradua%C3%A7%C3%A3o-em-Ci%C3%AAncias-de-Computa%C3%A7%C3%A3o-e-Matem%C3%A1tica-Computacional.jpg'}}
           />
         </View>
         <View style={styles.postTextContainer}>
-          <Text style={styles.postText}>Acabei de ser promovido a chefe de cozinha no ICMC Júnior. (só sei fazer macarrão e carne moída)</Text>
+          <Text style={styles.postText}>As férias estão acabando</Text>
         </View>
       </View>
       <View style={styles.footer}>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
   postImage: {
     width: '100%',
-    aspectRatio: 1.5
+    aspectRatio: 1
   },
   postTextContainer: {
     paddingHorizontal: 15,
