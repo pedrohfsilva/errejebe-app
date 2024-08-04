@@ -1,10 +1,30 @@
-import React, { useState } from "react"
-import { View, Text, StyleSheet, Image } from 'react-native'
-import Button from "../../components/Button"
-import * as ImagePicker from 'expo-image-picker'
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Image, Alert } from 'react-native';
+import Button from "../../components/Button";
+import * as ImagePicker from 'expo-image-picker';
 
 export default function Upload({ navigation, route }) {
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState('');
+  const { from } = route.params;
+
+  const handleTakePicturePress = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permissão necessária', 'Precisamos da sua permissão para usar a câmera.');
+      return;
+    }
+
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   const handleImagePickerPress = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -12,36 +32,35 @@ export default function Upload({ navigation, route }) {
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
-    })
+    });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri)
+      setImage(result.assets[0].uri);
     }
-  }
+  };
 
   const handleSendPress = () => {
-    console.log('rota')
-    console.log(route.params?.from)
+    console.log('rota');
+    console.log(route.params?.from);
     if (route.params?.from) {
-      navigation.navigate(route.params.from, { image })
+      navigation.navigate(route.params.from, { image });
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
-      {image && <Image source={{ uri: image }} style={styles.image} />}
+      {image && <Image source={{ uri: image }} style={[styles.image, { borderRadius: from == 'CreateScreen' ? 0 : 100 }]} />}
       <View style={styles.buttonsView}>
         <Text style={styles.title}>Upload de Foto</Text>
-        <Text style={styles.subTitle}>Escolha sua foto de perfil</Text>
         <View style={styles.button}>
           <Button
             buttonText="Tirar foto"
-            handlePress={() => navigation.navigate('UploadScreen')}
+            handlePress={handleTakePicturePress}
           />
         </View>
         <View style={styles.button}>
           <Button 
-            buttonText="Abrir Galeria"
+            buttonText="Abrir galeria"
             handlePress={handleImagePickerPress}
           />
         </View>
@@ -53,7 +72,7 @@ export default function Upload({ navigation, route }) {
         </View>
         <View style={styles.button}>
           <Button 
-            buttonText="Enviar"
+            buttonText="Usar essa foto"
             handlePress={handleSendPress}
           />
         </View>
@@ -98,6 +117,5 @@ const styles = StyleSheet.create({
     height: 200,
     alignSelf: 'center',
     margin: 30,
-    // borderRadius: 100,
   },
-})
+});

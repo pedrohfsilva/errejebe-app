@@ -12,7 +12,6 @@ export default function Profile({ navigation, route }) {
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false} >
       <View style={styles.profileInfoContainer}>
-        <Text>id: {userId}</Text>
         <View style={styles.profilePhotoContainer}>
           <Image 
             style={styles.profilePhoto}

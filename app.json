@@ -18,14 +18,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.pedrohfsilva.errejebe"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-      
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a9dbc844-d815-4e71-9ae8-2e61e68ba7ad"
+      }
+    },
+    "owner": "pedrohfsilva"
   }
 }

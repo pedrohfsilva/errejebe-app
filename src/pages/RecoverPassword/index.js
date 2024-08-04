@@ -5,6 +5,10 @@ import EmailInput from '../../components/EmailInput'
 import Button from "../../components/Button"
 
 export default function Recover({ navigation }) {
+  function handleSendEmail() {
+    alert('Email de recuperação de senha enviado');
+  }
+
   return (
     <View style={styles.container}>
       <Logo />
@@ -13,6 +17,7 @@ export default function Recover({ navigation }) {
       <View style={styles.flexGrow} />
       <Button 
         buttonText="Enviar e-mail de recuperação"
+        handlePress={handleSendEmail}
       />
       <Text style={styles.linkText}
           onPress={() => navigation.navigate('LoginScreen')}>
