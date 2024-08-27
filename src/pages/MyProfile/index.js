@@ -1,5 +1,5 @@
-import React from "react"
-import  { View, Text, StyleSheet, ScrollView, Image } from 'react-native'
+import React, {useState, useEffect} from "react"
+import  { View, Text, StyleSheet, ScrollView, Image, FlatList } from 'react-native'
 import Button from '../../components/Button'
 import Post from '../../components/Post'
 import EditButton from '../../components/EditButton'
@@ -8,32 +8,66 @@ import EditButton from '../../components/EditButton'
 const luisFoto = require('../../../assets/luisfoto.jpeg');
 
 export default function MyProfile({ navigation }) {
-  return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false} >
-      <View style={styles.profileInfoContainer}>
-        <View style={styles.profilePhotoContainer}>
-          <Image 
-            style={styles.profilePhoto}
-            source={luisFoto}
-          />
-          <View style={styles.editButton}>
-            <EditButton
-              handlePress={() => navigation.navigate('EditProfileScreen')}
-              color={"#0168BC"}
-              backgroundColor={"#EEEEEE"}/>
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  async function fetchData() {
+    setLoading(true);
+    try {
+      const response = await fetch('http://172.26.91.18:3000/api/postsByUser/66c26fbf436dc83286acdcd8');
+      const json = await response.json();
+      setPosts(json);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    console.log(posts);
+  }, []);
+
+  const renderHeader = () => {
+    return (
+      <View style={styles.container}>
+        <View style={styles.profileInfoContainer}>
+          <View style={styles.profilePhotoContainer}>
+            <Image 
+              style={styles.profilePhoto}
+              source={luisFoto}
+            />
+            <View style={styles.editButton}>
+              <EditButton
+                handlePress={() => navigation.navigate('EditProfileScreen')}
+                color={"#0168BC"}
+                backgroundColor={"#EEEEEE"}/>
+            </View>
           </View>
+          <Text style={styles.profileName} numberOfLines={1}>Luíz Henrique</Text>
+          <Text style={styles.profileInfo} numberOfLines={1}>Diretor de compras</Text>
+          <Text style={styles.publicationsText}>Publicações</Text>
         </View>
-        <Text style={styles.profileName} numberOfLines={1}>Luíz Henrique</Text>
-        <Text style={styles.profileInfo} numberOfLines={1}>Diretor de compras</Text>
-        <Text style={styles.publicationsText}>Publicações</Text>
       </View>
-      <View style={styles.postsContainer}>
-        <Post navigation={navigation} postId={938374} />
-        <Post navigation={navigation} postId={938374} />
-        <Post navigation={navigation} postId={938374} />
-      </View>
-    </ScrollView>
-  )
+    );
+  };
+
+  return (
+    <FlatList
+      style={styles.postsContainer}
+      data={posts}
+      keyExtractor={item => item._id.toString()}
+      renderItem={({ item }) => (
+        <Post navigation={navigation} postInfo={item} />
+      )}
+      ListHeaderComponent={renderHeader}
+      ListEmptyComponent={() => (
+        <Text style={styles.postsText}>Nenhum post</Text>
+      )}
+      showsVerticalScrollIndicator={false}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
@@ -84,5 +118,11 @@ const styles = StyleSheet.create({
   },
   postsContainer: {
     flex: 1,
+    backgroundColor: "#fff"
   },
+  postsText: {
+    fontSize: 18,
+    color: '#444',
+    textAlign: 'center',
+  }
 })

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons'
 
-export default function Post({ navigation, postId }) {
+export default function Post({ navigation, postInfo }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -11,7 +11,7 @@ export default function Post({ navigation, postId }) {
             <View style={styles.profilePhotoContainer}>
               <Image 
                 style={styles.profileProto}
-                source={{ uri: 'https://media.licdn.com/dms/image/D4E03AQGeL9G0MYulLQ/profile-displayphoto-shrink_200_200/0/1699324249256?e=2147483647&v=beta&t=qPDmZCJdwLRzWraYIU9VBUJGs7gwCF4WeclrayNY3-s' }}
+                source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_wBNgIithcAFRt-Esqz467LbAUaO-9-Vwmg&s' }}
               />
             </View>
             <View style={styles.profileInfo}>
@@ -30,7 +30,7 @@ export default function Post({ navigation, postId }) {
           />
         </View>
         <View style={styles.postTextContainer}>
-          <Text style={styles.postText}>As férias estão acabando</Text>
+          <Text style={styles.postText}>{postInfo.text}</Text>
         </View>
       </View>
       <View style={styles.footer}>
@@ -39,7 +39,7 @@ export default function Post({ navigation, postId }) {
             <Feather name="thumbs-up" size={25} color="#0168BC" />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("CommentsScreen", { postId: 3626382 })}>
+        <TouchableOpacity onPress={() => navigation.navigate("CommentsScreen", { commentsInfo: postInfo.comments })}>
           <View style={styles.commentsButton}>
             <Text style={styles.commentsText}>Comentários</Text>
           </View>
