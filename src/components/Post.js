@@ -39,7 +39,7 @@ export default function Post({ navigation, postInfo }) {
             <Feather name="thumbs-up" size={25} color="#0168BC" />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("CommentsScreen", { commentsInfo: postInfo.comments })}>
+        <TouchableOpacity onPress={() => navigation.navigate("CommentsScreen", { postInfo: postInfo })}>
           <View style={styles.commentsButton}>
             <Text style={styles.commentsText}>Comentários</Text>
           </View>
