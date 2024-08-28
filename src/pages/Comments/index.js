@@ -40,6 +40,7 @@ export default function Comments({ navigation, route }) {
 
   useEffect(() => {
     fetchData();
+    console.log(postInfo)
   }, []);
 
   async function handleSendComment() {
@@ -51,7 +52,7 @@ export default function Comments({ navigation, route }) {
     Keyboard.dismiss();
   
     const newComment = {
-      userId: 'id_do_usuario',
+      userId: '66c273176fce2dbc9a3c4083',
       postId: postInfo._id,
       text: commentText
     };
@@ -70,10 +71,10 @@ export default function Comments({ navigation, route }) {
       }
   
       const result = await response.json();
-      setComments(prevComments => [result.response, ...prevComments]);
       
       setCommentText('');
-  
+
+      handleRefresh();
     } catch (error) {
       console.error('Erro ao enviar o comentário:', error);
       alert('Erro ao enviar o comentário. Tente novamente.');
@@ -83,7 +84,7 @@ export default function Comments({ navigation, route }) {
   const renderHeader = () => (
     <View style={styles.postContainer}>
       <View style={styles.header}>
-        <TouchableOpacity style={{ flex: 1, overflow: 'hidden' }} onPress={() => navigation.navigate("ProfileScreen", { userId: 737237 })}>
+        <TouchableOpacity style={{ flex: 1, overflow: 'hidden' }} onPress={() => navigation.navigate("ProfileScreen", { userId: postInfo.user._id })}>
           <View style={styles.profileContainer}>
             <View style={styles.profilePhotoContainer}>
               <Image
@@ -92,8 +93,8 @@ export default function Comments({ navigation, route }) {
               />
             </View>
             <View style={styles.profileInfo}>
-              <Text style={styles.profileName} numberOfLines={1}>Pedro Henrique Ferreira Silva Pedro Henrique Ferreira Silva</Text>
-              <Text style={styles.profileCareer} numberOfLines={1}>Membro trainee</Text>
+              <Text style={styles.profileName} numberOfLines={1}>{postInfo.user.name}</Text>
+              <Text style={styles.profileCareer} numberOfLines={1}>{postInfo.user.positionCompany}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -107,8 +108,11 @@ export default function Comments({ navigation, route }) {
           />
         </View>
         <View style={styles.postTextContainer}>
-          <Text style={styles.postText}>As férias estão acabando</Text>
+          <Text style={styles.postText}>{postInfo.text}</Text>
         </View>
+      </View>
+      <View style={styles.commentsLabelContainer}>
+        <Text style={styles.commentLabel}>Comentários</Text>
       </View>
     </View>
   );
@@ -137,12 +141,9 @@ export default function Comments({ navigation, route }) {
                 />
               }
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 20 }}
-              keyboardShouldPersistTaps="always"
             />
-            <ScrollView
-              contentContainerStyle={styles.commentInputContainer}
-              keyboardShouldPersistTaps="always"
+            <View
+              style={styles.commentInputContainer}
             >
               <TextInput
                 style={styles.commentInput}
@@ -157,7 +158,7 @@ export default function Comments({ navigation, route }) {
                   <Feather name="send" color="#0168BC" size={25} />
                 </View>
               </TouchableOpacity>
-            </ScrollView>
+            </View>
           </>
         )}
       </View>
@@ -231,14 +232,28 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#222',
   },
+  commentsLabelContainer: {
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  commentLabel: {
+    fontSize: 16,
+    color: "#0168BC"
+  },
   commentInputContainer: {
     flexDirection: 'row',
     paddingHorizontal: 15,
     paddingVertical: 15,
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    backgroundColor: "#fff",
   },
   commentInput: {
     flex: 1,

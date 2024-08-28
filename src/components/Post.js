@@ -1,49 +1,87 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { Feather } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons';
+import { IP_PROVISORIO } from '@env'
 
 export default function Post({ navigation, postInfo }) {
+  const [liked, setLiked] = useState(postInfo.likes.includes(postInfo.user._id)); // Supondo que você tenha o ID do usuário
+  const [likeCount, setLikeCount] = useState(postInfo.likes.length);
+
+  useEffect(() => {
+    setLiked(postInfo.likes.includes(postInfo.user._id))
+    setLikeCount(postInfo.likes.length)
+  }, [postInfo])
+
+  async function handleToggleLike() {
+    try {
+      const response = await fetch(`http://${IP_PROVISORIO}/api/toggleLike/${postInfo._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId: postInfo.user._id }) // Substitua 'id_do_usuario' pelo ID real do usuário
+      });
+
+      if (response.ok) {
+        const updatedPost = await response.json();
+
+        setLiked(updatedPost.updatedPost.likes.includes(postInfo.user._id));
+        setLikeCount(updatedPost.updatedPost.likes.length);
+      } else {
+        console.error('Erro ao alternar o like');
+      }
+    } catch (error) {
+      console.error('Erro ao alternar o like:', error);
+    }
+  }
+
   return (
     <View style={styles.container}>
+      {/* Cabeçalho do post */}
       <View style={styles.header}>
-        <TouchableOpacity style={{flex: 1, overflow: 'hidden'}} onPress={() => navigation.navigate("ProfileScreen", {userId: 87387283})} >
+        <TouchableOpacity style={{ flex: 1, overflow: 'hidden' }} onPress={() => navigation.navigate("ProfileScreen", { userId: postInfo.user._id })}>
           <View style={styles.profileContainer}>
             <View style={styles.profilePhotoContainer}>
-              <Image 
+              <Image
                 style={styles.profileProto}
-                source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_wBNgIithcAFRt-Esqz467LbAUaO-9-Vwmg&s' }}
+                source={{ uri: postInfo.user.photo }}
               />
             </View>
             <View style={styles.profileInfo}>
-              <Text style={styles.profileName} numberOfLines={1} >Pedro Henrique Ferreira Silva Pedro Henrique Ferreira Silva</Text>
-              <Text style={styles.profileCareer} numberOfLines={1}>Membro trainee</Text>
+              <Text style={styles.profileName} numberOfLines={1} >{postInfo.user.name}</Text>
+              <Text style={styles.profileCareer} numberOfLines={1}>{postInfo.user.positionCompany}</Text>
             </View>
           </View>
         </TouchableOpacity>
         <Text style={styles.postDate}>há 2 min</Text>
       </View>
+
+      {/* Conteúdo do post */}
       <View style={styles.post}>
         <View style={styles.postImageContainer}>
-          <Image 
-            style={styles.postImage} 
-            source={{ uri: 'https://saocarlos.usp.br/wp-content/uploads/2021/10/ICMC-abre-vagas-para-p%C3%B3s-gradua%C3%A7%C3%A3o-em-Ci%C3%AAncias-de-Computa%C3%A7%C3%A3o-e-Matem%C3%A1tica-Computacional.jpg'}}
+          <Image
+            style={styles.postImage}
+            source={{ uri: postInfo.image }}
           />
         </View>
         <View style={styles.postTextContainer}>
           <Text style={styles.postText}>{postInfo.text}</Text>
         </View>
       </View>
+
+      {/* Rodapé do post */}
       <View style={styles.footer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleToggleLike}>
           <View style={styles.likeButton}>
-            <Feather name="thumbs-up" size={25} color="#0168BC" />
+            <Feather name="thumbs-up" size={25} color={liked ? "#0168BC" : "#444"} />
+            <Text style={styles.likeButtonText}>{likeCount}</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("CommentsScreen", { postInfo: postInfo })}>
           <View style={styles.commentsButton}>
             <Text style={styles.commentsText}>Comentários</Text>
           </View>
-        </TouchableOpacity> 
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -123,7 +161,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   likeButton: {
-
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  likeButtonText: {
+    fontSize: 18,
+    fontWeight: 'semibold'
   },
   commentsButton: {
     paddingHorizontal: 10,

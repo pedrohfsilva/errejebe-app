@@ -5,7 +5,7 @@ export default function Comment({ navigation, commentInfo }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={{flex: 1, overflow: 'hidden'}} onPress={() => navigation.navigate("ProfileScreen", { userId: 77287382 })}>
+        <TouchableOpacity style={{flex: 1, overflow: 'hidden'}} onPress={() => navigation.navigate("ProfileScreen", { userId: commentInfo.user._id })}>
           <View style={styles.profileContainer}>
             <View style={styles.profilePhotoContainer}>
               <Image 
@@ -14,7 +14,7 @@ export default function Comment({ navigation, commentInfo }) {
               />
             </View>
             <View style={styles.profileInfo}>
-              <Text style={styles.profileName} numberOfLines={1} >Pedro Henrique</Text>
+              <Text style={styles.profileName} numberOfLines={1} >{commentInfo.user.name}</Text>
             </View>
           </View>
         </TouchableOpacity>

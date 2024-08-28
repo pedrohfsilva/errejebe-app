@@ -5,7 +5,7 @@ import { Feather } from '@expo/vector-icons'
 export default function ProfileSearch({ navigation, userInfo }) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={{flex: 1, overflow: 'hidden'}} onPress={() => navigation.navigate("ProfileScreen", {userId: 87387283})} >
+      <TouchableOpacity style={{flex: 1, overflow: 'hidden'}} onPress={() => navigation.navigate("ProfileScreen", {userId: userInfo._id})} >
         <View style={styles.profileContainer}>
           <View style={styles.profilePhotoContainer}>
             <Image 

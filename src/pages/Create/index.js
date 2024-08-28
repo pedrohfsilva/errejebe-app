@@ -6,7 +6,7 @@ import PublishButton from "../../components/PublishButton"
 export default function Home({ navigation, route }) {
   const [postText, setPostText] = useState('')
   const [image, setImage] = useState('')
-  const userId = '12345678'; // Aqui você deve substituir pelo ID real do usuário, que pode ser obtido de diversas formas
+  const userId = '66cf7747d0a4c54263a8b4ff'; // Aqui você deve substituir pelo ID real do usuário, que pode ser obtido de diversas formas
 
   async function handlePublish() {
     if (postText === '') {
@@ -16,7 +16,7 @@ export default function Home({ navigation, route }) {
 
     const post = {
       userId: userId,
-      image: image,
+      image: 'imagem',
       text: postText
     };
 
