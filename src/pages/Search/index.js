@@ -1,11 +1,47 @@
-import { useState } from "react"
-import  { View, ScrollView, Text, StyleSheet, TextInput } from 'react-native'
-import { Feather } from '@expo/vector-icons'
+import { useState, useEffect } from "react";
+import { View, TextInput, FlatList, RefreshControl, ActivityIndicator, StyleSheet } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { IP_PROVISORIO } from '@env';
 
-import ProfileSearch from "../../components/ProfileSearch"
+import ProfileSearch from "../../components/ProfileSearch";
 
 export default function Search({ navigation, userId }) {
-  const [searchText, setSearchText] = useState('')
+  const [searchText, setSearchText] = useState('');
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  async function fetchData() {
+    setLoading(true);
+    try {
+      const response = await fetch(`http://${IP_PROVISORIO}/api/users`);
+      const json = await response.json();
+      console.log('Users fetched:', json); // Log para verificar os dados retornados
+      setUsers(json);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  async function handleRefresh() {
+    setRefreshing(true);
+    try {
+      const response = await fetch(`http://${IP_PROVISORIO}/api/users`);
+      const json = await response.json();
+      console.log('Users refreshed:', json); // Log para verificar os dados retornados
+      setUsers(json);
+    } catch (error) {
+      console.error('Error refreshing users:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -18,16 +54,28 @@ export default function Search({ navigation, userId }) {
           placeholder="Pesquisar perfil"
         />
       </View>
-      <ScrollView style={styles.profilesContainer}>
-        <ProfileSearch navigation={navigation} userId={372372388} />
-        <ProfileSearch navigation={navigation} userId={372372388} />
-        <ProfileSearch navigation={navigation} userId={372372388} />
-        <ProfileSearch navigation={navigation} userId={372372388} />
-        <ProfileSearch navigation={navigation} userId={372372388} />
-        <ProfileSearch navigation={navigation} userId={372372388} />
-      </ScrollView>
+      <View style={styles.profilesContainer}>
+        { loading ? (
+          <ActivityIndicator />
+        ) : (
+          <FlatList 
+            data={users}
+            keyExtractor={item => item._id.toString()}
+            renderItem={({ item }) => (
+              <ProfileSearch navigation={navigation} userInfo={item} />
+            )}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+              />
+            }
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+      </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -56,4 +104,4 @@ const styles = StyleSheet.create({
   profilesContainer: {
     flex: 1,
   }
-})
+});

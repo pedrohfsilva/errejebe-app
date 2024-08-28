@@ -6,14 +6,42 @@ import PublishButton from "../../components/PublishButton"
 export default function Home({ navigation, route }) {
   const [postText, setPostText] = useState('')
   const [image, setImage] = useState('')
+  const userId = '12345678'; // Aqui você deve substituir pelo ID real do usuário, que pode ser obtido de diversas formas
 
-  function handlePublish() {
-    if(postText == '') {
-      alert("Escreva algo antes de publicar")
-    } else {
+  async function handlePublish() {
+    if (postText === '') {
+      alert('Escreva algo antes de publicar');
+      return;
+    }
+
+    const post = {
+      userId: userId,
+      image: image,
+      text: postText
+    };
+
+    try {
+      const response = await fetch(`http://${process.env.IP_PROVISORIO}/api/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(post)
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao criar o post');
+      }
+
+      const data = await response.json();
+      alert(data.msg);
+
+      // Limpar os campos após o sucesso da publicação
       setPostText('');
       setImage('');
-      alert("Publicado: " + postText);
+    } catch (error) {
+      console.error('Erro ao publicar o post:', error);
+      alert('Ocorreu um erro ao publicar o post. Tente novamente.');
     }
   }
 

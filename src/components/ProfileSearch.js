@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons'
 
-export default function ProfileSearch({ navigation, postId }) {
+export default function ProfileSearch({ navigation, userInfo }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={{flex: 1, overflow: 'hidden'}} onPress={() => navigation.navigate("ProfileScreen", {userId: 87387283})} >
@@ -14,8 +14,8 @@ export default function ProfileSearch({ navigation, postId }) {
             />
           </View>
           <View style={styles.profileInfo}>
-            <Text style={styles.profileName} numberOfLines={1} >Pedro Henrique Ferreira Silva Pedro Henrique Ferreira Silva</Text>
-            <Text style={styles.profileCareer} numberOfLines={1}>Membro trainee</Text>
+            <Text style={styles.profileName} numberOfLines={1} >{userInfo.name}</Text>
+            <Text style={styles.profileCareer} numberOfLines={1}>{userInfo.positionCompany}</Text>
           </View>
         </View>
       </TouchableOpacity>

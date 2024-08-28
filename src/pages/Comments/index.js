@@ -6,6 +6,7 @@ import Comment from "../../components/Comment";
 
 export default function Comments({ navigation, route }) {
   const { commentsInfo } = route.params;
+  const { loading, setLoading } = useState(false)
 
   const [commentText, setCommentText] = useState('');
 
@@ -71,19 +72,24 @@ export default function Comments({ navigation, route }) {
   };
 
   return (
-    <FlatList
-      style={styles.container}
-      data={commentsInfo}
-      keyExtractor={item => item._id.toString()}
-      renderItem={({ item }) => (
-        <Comment navigation={navigation} commentInfo={item} />
+    <View style={styles.container}>
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={commentsInfo}
+          keyExtractor={item => item._id.toString()}
+          renderItem={({ item }) => (
+            <Comment navigation={navigation} commentInfo={item} />
+          )}
+          ListHeaderComponent={renderHeader}
+          ListEmptyComponent={() => (
+            <Text style={styles.commentsText}>Nenhum comentário</Text>
+          )}
+          showsVerticalScrollIndicator={false}
+        />
       )}
-      ListHeaderComponent={renderHeader}
-      ListEmptyComponent={() => (
-        <Text style={styles.commentsText}>Nenhum comentário</Text>
-      )}
-      showsVerticalScrollIndicator={false}
-    />
+    </View>
   );
 }
 

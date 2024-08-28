@@ -1,35 +1,69 @@
-import React, {useState, useEffect} from "react"
-import  { View, Text, StyleSheet, ScrollView, Image, FlatList } from 'react-native'
-import Button from '../../components/Button'
-import Post from '../../components/Post'
-import EditButton from '../../components/EditButton'
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Image, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
+import Button from '../../components/Button';
+import Post from '../../components/Post';
+import EditButton from '../../components/EditButton';
+import { IP_PROVISORIO } from '@env';
 
-// Assuming you have the image in your project's assets folder
+// Supondo que você tenha a imagem no diretório de assets do projeto
 const luisFoto = require('../../../assets/luisfoto.jpeg');
 
 export default function MyProfile({ navigation }) {
   const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   async function fetchData() {
     setLoading(true);
     try {
-      const response = await fetch('http://172.26.91.18:3000/api/postsByUser/66c26fbf436dc83286acdcd8');
-      const json = await response.json();
-      setPosts(json);
+      const [userResponse, postsResponse] = await Promise.all([
+        fetch(`http://${IP_PROVISORIO}/api/users/66c273176fce2dbc9a3c4083`),
+        fetch(`http://${IP_PROVISORIO}/api/postsByUser/66c273176fce2dbc9a3c4083`)
+      ]);
+  
+      const userJson = await userResponse.json();
+      const postsJson = await postsResponse.json();
+  
+      setUser(userJson);
+      setPosts(postsJson);
     } catch (error) {
       console.error('Error fetching data: ', error);
     } finally {
       setLoading(false);
     }
-  };
+  }
+  
+  async function handleRefresh() {
+    setRefreshing(true);
+    try {
+      const [userResponse, postsResponse] = await Promise.all([
+        fetch(`http://${IP_PROVISORIO}/api/users/66c273176fce2dbc9a3c4083`),
+        fetch(`http://${IP_PROVISORIO}/api/postsByUser/66c273176fce2dbc9a3c4083`)
+      ]);
+  
+      const userJson = await userResponse.json();
+      const postsJson = await postsResponse.json();
+  
+      setUser(userJson);
+      setPosts(postsJson);
+    } catch (error) {
+      console.error('Error refreshing data: ', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }  
 
   useEffect(() => {
     fetchData();
-    console.log(posts);
+    console.log(user)
   }, []);
 
   const renderHeader = () => {
+    if(!user) {
+      return null
+    }
+
     return (
       <View style={styles.container}>
         <View style={styles.profileInfoContainer}>
@@ -45,8 +79,8 @@ export default function MyProfile({ navigation }) {
                 backgroundColor={"#EEEEEE"}/>
             </View>
           </View>
-          <Text style={styles.profileName} numberOfLines={1}>Luíz Henrique</Text>
-          <Text style={styles.profileInfo} numberOfLines={1}>Diretor de compras</Text>
+          <Text style={styles.profileName} numberOfLines={1}>{user.name}</Text>
+          <Text style={styles.profileInfo} numberOfLines={1}>{user.positionCompany}</Text>
           <Text style={styles.publicationsText}>Publicações</Text>
         </View>
       </View>
@@ -54,19 +88,31 @@ export default function MyProfile({ navigation }) {
   };
 
   return (
-    <FlatList
-      style={styles.postsContainer}
-      data={posts}
-      keyExtractor={item => item._id.toString()}
-      renderItem={({ item }) => (
-        <Post navigation={navigation} postInfo={item} />
+    <View style={styles.container}>
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          style={styles.postsContainer}
+          data={posts}
+          keyExtractor={item => item._id.toString()}
+          renderItem={({ item }) => (
+            <Post navigation={navigation} postInfo={item} />
+          )}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+            />
+          }
+          ListHeaderComponent={renderHeader}
+          ListEmptyComponent={() => (
+            <Text style={styles.postsText}>Nenhum post</Text>
+          )}
+          showsVerticalScrollIndicator={false}
+        />
       )}
-      ListHeaderComponent={renderHeader}
-      ListEmptyComponent={() => (
-        <Text style={styles.postsText}>Nenhum post</Text>
-      )}
-      showsVerticalScrollIndicator={false}
-    />
+    </View>
   );
 }
 
@@ -125,4 +171,4 @@ const styles = StyleSheet.create({
     color: '#444',
     textAlign: 'center',
   }
-})
+});

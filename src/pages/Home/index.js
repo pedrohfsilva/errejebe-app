@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react"
-import  { View, Text, StyleSheet, Button, ScrollView, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
-import MaterialIcons from '@expo/vector-icons/MaterialIcons'
+import { useEffect, useState } from "react";
+import { View, StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
+import { IP_PROVISORIO } from '@env';
 
-import Post from '../../components/Post'
-import ExitButton from "../../components/ExitButton"
+import Post from '../../components/Post';
+import ExitButton from "../../components/ExitButton";
 
 export default function Home({ navigation }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   function handleExit() {
     navigation.navigate('LoginScreen');
@@ -16,7 +17,7 @@ export default function Home({ navigation }) {
   async function fetchData() {
     setLoading(true);
     try {
-      const response = await fetch('http://172.26.91.18:3000/api/posts');
+      const response = await fetch(`http://${IP_PROVISORIO}/api/posts`);
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -26,11 +27,23 @@ export default function Home({ navigation }) {
     }
   };
 
+  async function handleRefresh() {
+    setRefreshing(true);
+    try {
+      const response = await fetch(`http://${IP_PROVISORIO}/api/posts`);
+      const json = await response.json();
+      setData(json);
+    } catch (error) {
+      console.error('Error refreshing data: ', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }
+
   useEffect(() => {
     fetchData();
-    console.log(data);
-  }, [])
-  
+  }, []);
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -40,8 +53,8 @@ export default function Home({ navigation }) {
   }, [navigation]);
 
   return (
-    <View style={styles.container} showsVerticalScrollIndicator={false} >
-      { loading ? (
+    <View style={styles.container}>
+      {loading ? (
         <ActivityIndicator />
       ) : (
         <FlatList 
@@ -50,10 +63,17 @@ export default function Home({ navigation }) {
           renderItem={({ item }) => (
             <Post navigation={navigation} postInfo={item} />
           )}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+            />
+          }
+          showsVerticalScrollIndicator={false}
         />
       )}
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -61,4 +81,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-})
+});
