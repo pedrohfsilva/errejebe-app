@@ -1,17 +1,77 @@
 import React, { useState, useEffect} from "react"
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Alert } from 'react-native'
 import Logo from '../../components/Logo'
-import NameInput from "../../components/NameInput"
-import DepartmentInput from "../../components/DepartmentInput"
-import EmailInput from '../../components/EmailInput'
-import PasswordInput from '../../components/PasswordInput'
-import ConfirmPasswordInput from '../../components/ConfirmPasswordInput'
 import Button from "../../components/Button"
 import EditButton from '../../components/EditButton'
+import Input from "../../components/Input"
 import { Feather } from '@expo/vector-icons'
+import { IP_PROVISORIO } from '@env';
 
 export default function Register({ navigation, route }) {
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState('');
+  const [name, setName] = useState('');
+  const [department, setDepartment] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  async function handleRegister() {
+    if (!name || !department || !email || !password) {
+      Alert.alert('Erro', 'Preencha todos os campos.');
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      Alert.alert('Erro', 'Por favor, insira um email válido.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert('Erro', 'As senhas não coincidem.');
+      return;
+    }
+
+    try {
+      // Cria o objeto do novo usuário
+      const newUser = {
+        name: name,
+        positionCompany: department,
+        email: email,
+        password: password,
+        photo: image,
+      };
+
+      console.log(newUser)
+
+      // Verifica se o email já está em uso
+      const response = await fetch(`http://${IP_PROVISORIO}/api/users/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      });
+
+      const data = await response.json();
+
+      if (response.status === 400) {
+        Alert.alert('Erro', data.msg); // Exibe a mensagem de erro retornada pela API
+      } else if (response.status === 201) {
+        Alert.alert('Sucesso', 'Usuário registrado com sucesso.');
+        navigation.navigate('LoginScreen');
+      } else {
+        Alert.alert('Erro', 'Houve um problema ao registrar o usuário.');
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Erro', 'Não foi possível realizar o registro.');
+    }
+  }
 
   useEffect(() => {
     if (route.params?.image) {
@@ -34,15 +94,16 @@ export default function Register({ navigation, route }) {
             />
         </View>
       )}
-      <NameInput />
-      <DepartmentInput />
-      <EmailInput />
-      <PasswordInput />
-      <ConfirmPasswordInput />
+      <Input iconName="user" placeholder="Nome" value={name} onChange={setName} />
+      <Input iconName="briefcase" placeholder="Área na empresa" value={department} onChange={setDepartment} />
+      <Input iconName="mail" placeholder="E-mail" value={email} onChange={setEmail} />
+      <Input iconName="lock" placeholder="Senha" value={password} onChange={setPassword} isPassword />
+      <Input iconName="lock" placeholder="Confirmar senha" value={confirmPassword} onChange={setConfirmPassword} isPassword />
+
       <View style={styles.flexGrow} />
       <Button 
         buttonText="Cadastrar"
-        handlePress={() => navigation.navigate('HomeScreen')}
+        handlePress={handleRegister}
       />
       <Text style={styles.text}>Já tem uma conta? 
         <Text style={styles.linkText}

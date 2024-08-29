@@ -85,7 +85,7 @@ function TabRoutes() {
   )
 }
 
-export function StackRoutes() {
+export function StackRoutesApp() {
   return (
     <Stack.Navigator 
       initialRouteName="TabRoutes" 
@@ -94,14 +94,26 @@ export function StackRoutes() {
       }}
     >
       <Stack.Screen name="TabRoutes" component={TabRoutes} options={{ headerShown: false }} />
-      <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerTitle: 'Login' }} />
-      <Stack.Screen name="RecoverPasswordScreen" component={RecoverPasswordScreen} options={{ headerTitle: 'Redefinir senha' }} />
-      <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ headerTitle: 'Registrar' }} />
       <Stack.Screen name="CommentsScreen" component={CommentsScreen} options={{ headerTitle: 'Comentários' }} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerTitle: 'Ver perfil' }} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} options={{ headerTitle: 'Editar perfil' }} />
-      <Stack.Screen name="NewPasswordScreen" component={NewPasswordScreen} options={{ headerTitle: 'Nova senha' }} />
       <Stack.Screen name="UploadScreen" component={UploadScreen} options={{ headerTitle: 'Upload' }} />
+    </Stack.Navigator>
+  )
+}
+
+export function StackRoutesAuth() {
+  return (
+    <Stack.Navigator 
+      initialRouteName="LoginScreen" 
+      screenOptions={{
+        headerTitleAlign: 'center'
+      }}
+    >
+      <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerTitle: 'Login' }} />
+      <Stack.Screen name="RecoverPasswordScreen" component={RecoverPasswordScreen} options={{ headerTitle: 'Redefinir senha' }} />
+      <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ headerTitle: 'Registrar' }} />
+      <Stack.Screen name="NewPasswordScreen" component={NewPasswordScreen} options={{ headerTitle: 'Nova senha' }} />
     </Stack.Navigator>
   )
 }

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { View, StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
 import { IP_PROVISORIO } from '@env';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import Post from '../../components/Post';
 import ExitButton from "../../components/ExitButton";
@@ -9,9 +10,15 @@ export default function Home({ navigation }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const { logout } = useContext(AuthContext);
 
-  function handleExit() {
-    navigation.navigate('LoginScreen');
+  async function handleExit() {
+    try {
+      await logout(); 
+      navigation.navigate('LoginScreen');
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
   }
 
   async function fetchData() {

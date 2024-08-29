@@ -2,18 +2,24 @@ import React, {useState, useEffect} from "react"
 import  { View, Text, StyleSheet, Image } from 'react-native'
 import Button from '../../components/Button'
 import EditButton from '../../components/EditButton'
-import NameInput from "../../components/NameInput"
-import DepartmentInput from "../../components/DepartmentInput"
+import Input from "../../components/Input"
 import { Feather } from "@expo/vector-icons"
 
 export default function EditProfile({ navigation, route }) {
   const [image, setImage] = useState('')
+  const [name, setName] = useState('')
+  const [department, setDepartment] = useState('')
+
+  function handleEdit() {
+    navigation.navigate('MyProfileScreen');
+  }
 
   useEffect(() => {
     if (route.params?.image) {
       setImage(route.params.image)
     }
   }, [route.params?.image])
+
   return (
     <View style={styles.container}>
       {image ? (
@@ -28,15 +34,12 @@ export default function EditProfile({ navigation, route }) {
         />
       </View>
       )}
-      <NameInput />
-      <DepartmentInput />
+      <Input iconName="user" placeholder="Nome" value={name} onChange={setName} />
+      <Input iconName="briefcase" placeholder="Área na empresa" value={department} onChange={setDepartment} />
+
       <View style={styles.flexGrow} />
-      <Button
-      buttonText="Editar"
-      handlePress={() => navigation.navigate('MyProfileScreen')}
-      />
+      <Button buttonText="Editar" handlePress={handleEdit} />
     </View>
-      
   )
 }
 

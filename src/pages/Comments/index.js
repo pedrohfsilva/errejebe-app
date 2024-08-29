@@ -52,7 +52,7 @@ export default function Comments({ navigation, route }) {
     Keyboard.dismiss();
   
     const newComment = {
-      userId: '66c273176fce2dbc9a3c4083',
+      userId: '66cf7747d0a4c54263a8b4ff',
       postId: postInfo._id,
       text: commentText
     };

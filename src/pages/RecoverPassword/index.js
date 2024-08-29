@@ -1,10 +1,12 @@
-import React from "react"
+import { useState } from "react"
 import { View, Text, StyleSheet } from 'react-native'
 import Logo from '../../components/Logo'
-import EmailInput from '../../components/EmailInput'
+import Input from '../../components/Input'
 import Button from "../../components/Button"
 
 export default function Recover({ navigation }) {
+  const [email, setEmail] = useState('')
+
   function handleSendEmail() {
     alert('Email de recuperação de senha enviado');
   }
@@ -13,7 +15,8 @@ export default function Recover({ navigation }) {
     <View style={styles.container}>
       <Logo />
       <Text style={styles.text}>Insira o e-mail para recuperar a senha</Text>
-      <EmailInput />
+      <Input iconName="mail" placeholder="E-mail" value={email} onChange={setEmail} />
+
       <View style={styles.flexGrow} />
       <Button 
         buttonText="Enviar e-mail de recuperação"

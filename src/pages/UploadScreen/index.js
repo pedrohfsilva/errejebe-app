@@ -43,6 +43,7 @@ export default function Upload({ navigation, route }) {
     console.log('rota');
     console.log(route.params?.from);
     if (route.params?.from) {
+      console.log(image)
       navigation.navigate(route.params.from, { image });
     }
   };
