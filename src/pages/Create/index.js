@@ -13,29 +13,38 @@ export default function Home({ navigation, route }) {
       alert('Escreva algo antes de publicar');
       return;
     }
-
-    const post = {
-      userId: userId,
-      image: 'imagem',
-      text: postText
-    };
-
+  
+    const formData = new FormData();
+    formData.append('userId', userId);
+    formData.append('text', postText);
+  
+    // Se uma imagem foi selecionada, adicione-a ao FormData
+    if (image) {
+      const filename = image.split('/').pop();
+      const fileType = filename.split('.').pop();
+      formData.append('file', {
+        uri: image,
+        name: filename,
+        type: `image/${fileType}`,
+      });
+    }
+  
     try {
       const response = await fetch(`http://${process.env.IP_PROVISORIO}/api/posts`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'multipart/form-data',
         },
-        body: JSON.stringify(post)
+        body: formData,
       });
-
+  
       if (!response.ok) {
         throw new Error('Erro ao criar o post');
       }
-
+  
       const data = await response.json();
       alert(data.msg);
-
+  
       // Limpar os campos após o sucesso da publicação
       setPostText('');
       setImage('');
@@ -43,7 +52,7 @@ export default function Home({ navigation, route }) {
       console.error('Erro ao publicar o post:', error);
       alert('Ocorreu um erro ao publicar o post. Tente novamente.');
     }
-  }
+  }  
 
   function handleLoadImage() {
     navigation.navigate('UploadScreen', { from: 'CreateScreen' })

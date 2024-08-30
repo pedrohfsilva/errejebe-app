@@ -40,11 +40,8 @@ export default function Upload({ navigation, route }) {
   };
 
   const handleSendPress = () => {
-    console.log('rota');
-    console.log(route.params?.from);
     if (route.params?.from) {
-      console.log(image)
-      navigation.navigate(route.params.from, { image });
+      navigation.navigate(route.params.from, { image }); // Envia a imagem de volta para a tela anterior
     }
   };
 
@@ -74,7 +71,7 @@ export default function Upload({ navigation, route }) {
         <View style={styles.button}>
           <Button 
             buttonText="Usar essa foto"
-            handlePress={handleSendPress}
+            handlePress={handleSendPress} // Navega de volta com a imagem selecionada
           />
         </View>
       </View>
@@ -95,13 +92,6 @@ const styles = StyleSheet.create({
     color: '#444444',
     textAlign: 'center',
     marginBottom: 10,
-  },
-  subTitle: {
-    fontSize: 16,
-    fontWeight: 'regular',
-    color: '#444444',
-    textAlign: 'center',
-    marginBottom: 30,
   },
   buttonsView: {
     flex: 2,

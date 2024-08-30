@@ -12,6 +12,7 @@ export default function Home({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const { logout } = useContext(AuthContext);
 
+  // Função para lidar com o logout
   async function handleExit() {
     try {
       await logout(); 
@@ -21,6 +22,7 @@ export default function Home({ navigation }) {
     }
   }
 
+  // Função para buscar os dados dos posts
   async function fetchData() {
     setLoading(true);
     try {
@@ -28,12 +30,13 @@ export default function Home({ navigation }) {
       const json = await response.json();
       setData(json);
     } catch (error) {
-      console.error('Error fetching data: ', error);
+      console.error('Erro ao buscar dados: ', error);
     } finally {
       setLoading(false);
     }
   };
 
+  // Função para atualizar os dados ao puxar para atualizar
   async function handleRefresh() {
     setRefreshing(true);
     try {
@@ -41,16 +44,18 @@ export default function Home({ navigation }) {
       const json = await response.json();
       setData(json);
     } catch (error) {
-      console.error('Error refreshing data: ', error);
+      console.error('Erro ao atualizar dados: ', error);
     } finally {
       setRefreshing(false);
     }
   }
 
+  // useEffect para buscar os dados na montagem do componente
   useEffect(() => {
     fetchData();
   }, []);
 
+  // useEffect para configurar o botão de logout no cabeçalho
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -62,7 +67,7 @@ export default function Home({ navigation }) {
   return (
     <View style={styles.container}>
       {loading ? (
-        <ActivityIndicator />
+        <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         <FlatList 
           data={data}
@@ -87,5 +92,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

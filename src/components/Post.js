@@ -37,7 +37,6 @@ export default function Post({ navigation, postInfo }) {
 
   return (
     <View style={styles.container}>
-      {/* Cabeçalho do post */}
       <View style={styles.header}>
         <TouchableOpacity style={{ flex: 1, overflow: 'hidden' }} onPress={() => navigation.navigate("ProfileScreen", { userId: postInfo.user._id })}>
           <View style={styles.profileContainer}>
@@ -61,7 +60,7 @@ export default function Post({ navigation, postInfo }) {
         <View style={styles.postImageContainer}>
           <Image
             style={styles.postImage}
-            source={{ uri: postInfo.image }}
+            source={{ uri: `http://${IP_PROVISORIO}/${postInfo.imageSrc}` }}
           />
         </View>
         <View style={styles.postTextContainer}>
