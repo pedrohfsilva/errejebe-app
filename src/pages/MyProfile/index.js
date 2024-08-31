@@ -1,66 +1,83 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Image, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 import Button from '../../components/Button';
 import Post from '../../components/Post';
 import EditButton from '../../components/EditButton';
 import { IP_PROVISORIO } from '@env';
-
-// Supondo que você tenha a imagem no diretório de assets do projeto
-const luisFoto = require('../../../assets/luisfoto.jpeg');
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function MyProfile({ navigation }) {
   const [posts, setPosts] = useState([]);
-  const [user, setUser] = useState({});
+  const [profileData, setProfileData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [loadingPosts, setLoadingPosts] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  async function fetchData() {
+  const { userId } = useContext(AuthContext)
+
+  async function loadData() {
     setLoading(true);
     try {
       const [userResponse, postsResponse] = await Promise.all([
-        fetch(`http://${IP_PROVISORIO}/api/users/66c273176fce2dbc9a3c4083`),
-        fetch(`http://${IP_PROVISORIO}/api/postsByUser/66c273176fce2dbc9a3c4083`)
+        fetch(`http://${IP_PROVISORIO}/api/users/${userId}`),
+        fetch(`http://${IP_PROVISORIO}/api/postsByUser/${userId}`)
       ]);
   
-      const userJson = await userResponse.json();
+      const profileJson = await userResponse.json();
       const postsJson = await postsResponse.json();
   
-      setUser(userJson);
+      setProfileData(profileJson);
       setPosts(postsJson);
     } catch (error) {
-      console.error('Error fetching data: ', error);
+      console.error('Error refreshing data: ', error);
     } finally {
       setLoading(false);
     }
   }
+
+  async function loadPosts() {
+    setLoadingPosts(true);
+    try {
+      const response = await fetch(`http://${IP_PROVISORIO}/api/posts`);
+      if (!response.ok) {
+        throw new Error('Erro ao carregar posts do usuário');
+      }
+
+      const json = await response.json();
+      setPosts(json);
+    } catch (error) {
+      console.error('Erro ao buscar dados: ', error);
+    } finally {
+      setLoadingPosts(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData()
+  }, [userId]);
   
   async function handleRefresh() {
     setRefreshing(true);
     try {
       const [userResponse, postsResponse] = await Promise.all([
-        fetch(`http://${IP_PROVISORIO}/api/users/66c273176fce2dbc9a3c4083`),
-        fetch(`http://${IP_PROVISORIO}/api/postsByUser/66c273176fce2dbc9a3c4083`)
+        fetch(`http://${IP_PROVISORIO}/api/users/${userId}`),
+        fetch(`http://${IP_PROVISORIO}/api/postsByUser/${userId}`)
       ]);
   
-      const userJson = await userResponse.json();
+      const profileJson = await userResponse.json();
       const postsJson = await postsResponse.json();
   
-      setUser(userJson);
+      setProfileData(profileJson);
       setPosts(postsJson);
     } catch (error) {
       console.error('Error refreshing data: ', error);
     } finally {
       setRefreshing(false);
     }
-  }  
-
-  useEffect(() => {
-    fetchData();
-    console.log(user)
-  }, []);
+  }
 
   const renderHeader = () => {
-    if(!user) {
+    if(!profileData) {
       return null
     }
 
@@ -70,7 +87,7 @@ export default function MyProfile({ navigation }) {
           <View style={styles.profilePhotoContainer}>
             <Image 
               style={styles.profilePhoto}
-              source={luisFoto}
+              source={{ uri: `http://${IP_PROVISORIO}/${profileData.imageSrc}` }}
             />
             <View style={styles.editButton}>
               <EditButton
@@ -79,8 +96,8 @@ export default function MyProfile({ navigation }) {
                 backgroundColor={"#EEEEEE"}/>
             </View>
           </View>
-          <Text style={styles.profileName} numberOfLines={1}>{user.name}</Text>
-          <Text style={styles.profileInfo} numberOfLines={1}>{user.positionCompany}</Text>
+          <Text style={styles.profileName} numberOfLines={1}>{profileData.name}</Text>
+          <Text style={styles.profileInfo} numberOfLines={1}>{profileData.positionCompany}</Text>
           <Text style={styles.publicationsText}>Publicações</Text>
         </View>
       </View>
@@ -89,7 +106,7 @@ export default function MyProfile({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {loading ? (
+      { loading ? (
         <ActivityIndicator />
       ) : (
         <FlatList
@@ -133,6 +150,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
+    backgroundColor: "#ddd",
     marginBottom: 15,
     alignItems: 'center',
     justifyContent: 'center',

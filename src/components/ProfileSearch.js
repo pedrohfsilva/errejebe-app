@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { Feather } from '@expo/vector-icons'
+import { IP_PROVISORIO } from '@env'
 
 export default function ProfileSearch({ navigation, userInfo }) {
   return (
@@ -10,7 +10,7 @@ export default function ProfileSearch({ navigation, userInfo }) {
           <View style={styles.profilePhotoContainer}>
             <Image 
               style={styles.profileProto}
-              source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_wBNgIithcAFRt-Esqz467LbAUaO-9-Vwmg&s' }}
+              source={{ uri: `http://${IP_PROVISORIO}/${userInfo.imageSrc}` }}
             />
           </View>
           <View style={styles.profileInfo}>
@@ -43,6 +43,8 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
+    backgroundColor: "#ddd",
+    borderRadius: 1000,
   },
   profileProto: {
     flex: 1,

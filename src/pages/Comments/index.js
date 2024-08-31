@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, FlatList, RefreshControl, ActivityIndicator, Keyboard, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { IP_PROVISORIO } from '@env';
+import { AuthContext } from "../../contexts/AuthContext";
 
 import Comment from '../../components/Comment';
 
 export default function Comments({ navigation, route }) {
   const { postInfo } = route.params;
+  const { userId } = useContext(AuthContext);
+
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [comments, setComments] = useState([]);
@@ -52,7 +55,7 @@ export default function Comments({ navigation, route }) {
     Keyboard.dismiss();
   
     const newComment = {
-      userId: '66cf7747d0a4c54263a8b4ff',
+      userId: userId,
       postId: postInfo._id,
       text: commentText
     };
@@ -89,7 +92,7 @@ export default function Comments({ navigation, route }) {
             <View style={styles.profilePhotoContainer}>
               <Image
                 style={styles.profileProto}
-                source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_wBNgIithcAFRt-Esqz467LbAUaO-9-Vwmg&s' }}
+                source={{ uri: `http://${IP_PROVISORIO}/${postInfo.user.imageSrc}` }}
               />
             </View>
             <View style={styles.profileInfo}>
@@ -104,7 +107,7 @@ export default function Comments({ navigation, route }) {
         <View style={styles.postImageContainer}>
           <Image
             style={styles.postImage}
-            source={{ uri: 'https://saocarlos.usp.br/wp-content/uploads/2021/10/ICMC-abre-vagas-para-p%C3%B3s-gradua%C3%A7%C3%A3o-em-Ci%C3%AAncias-de-Computa%C3%A7%C3%A3o-e-Matem%C3%A1tica-Computacional.jpg' }}
+            source={{ uri: `http://${IP_PROVISORIO}/${postInfo.imageSrc}` }}
           />
         </View>
         <View style={styles.postTextContainer}>
@@ -141,6 +144,7 @@ export default function Comments({ navigation, route }) {
                 />
               }
               showsVerticalScrollIndicator={false}
+              style={styles.flatListContainer}
             />
             <View
               style={styles.commentInputContainer}
@@ -242,6 +246,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#0168BC"
   },
+  flatListContainer: {
+    flexGrow: 1,
+  },
   commentInputContainer: {
     flexDirection: 'row',
     paddingHorizontal: 15,
@@ -250,9 +257,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopWidth: 1,
     borderTopColor: '#ddd',
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
     backgroundColor: "#fff",
   },
   commentInput: {

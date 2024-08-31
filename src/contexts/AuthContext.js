@@ -1,21 +1,27 @@
 import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {jwtDecode} from 'jwt-decode';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(null);
-  const [loading, setLoading] = useState(true); // Novo estado para indicar se está carregando
+  const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadToken = async () => {
       try {
         const token = await AsyncStorage.getItem('authToken');
-        setAuthToken(token); // Atualiza o estado com o token, mesmo que seja null
+        setAuthToken(token);
+        if (token) {
+          const decodedToken = jwtDecode(token);
+          setUserId(decodedToken.id); // Supondo que o ID do usuário esteja no campo 'id'
+        }
       } catch (error) {
         console.error('Erro ao carregar o token:', error);
       } finally {
-        setLoading(false); // Após tentar carregar o token, mesmo com erro, setLoading é false
+        setLoading(false);
       }
     };
 
@@ -26,6 +32,8 @@ export const AuthProvider = ({ children }) => {
     try {
       await AsyncStorage.setItem('authToken', token);
       setAuthToken(token);
+      const decodedToken = jwtDecode(token);
+      setUserId(decodedToken.id);
     } catch (error) {
       console.error('Erro ao salvar o token:', error);
     }
@@ -35,13 +43,14 @@ export const AuthProvider = ({ children }) => {
     try {
       await AsyncStorage.removeItem('authToken');
       setAuthToken(null);
+      setUserId(null);
     } catch (error) {
       console.error('Erro ao remover o token:', error);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, login, logout, loading }}>
+    <AuthContext.Provider value={{ authToken, userId, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

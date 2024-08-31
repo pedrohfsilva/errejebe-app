@@ -1,10 +1,10 @@
-import React, { useState, useEffect} from "react"
-import { View, Text, StyleSheet, Image, Alert } from 'react-native'
-import Logo from '../../components/Logo'
-import Button from "../../components/Button"
-import EditButton from '../../components/EditButton'
-import Input from "../../components/Input"
-import { Feather } from '@expo/vector-icons'
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Image, Alert } from 'react-native';
+import Logo from '../../components/Logo';
+import Button from "../../components/Button";
+import EditButton from '../../components/EditButton';
+import Input from "../../components/Input";
+import { Feather } from '@expo/vector-icons';
 import { IP_PROVISORIO } from '@env';
 
 export default function Register({ navigation, route }) {
@@ -37,24 +37,31 @@ export default function Register({ navigation, route }) {
     }
 
     try {
-      // Cria o objeto do novo usuário
-      const newUser = {
-        name: name,
-        positionCompany: department,
-        email: email,
-        password: password,
-        photo: image,
-      };
+      // Cria o FormData para enviar a imagem e os dados do usuário
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('positionCompany', department);
+      formData.append('email', email);
+      formData.append('password', password);
 
-      console.log(newUser)
+      // Se uma imagem foi selecionada, adicione-a ao FormData
+      if (image) {
+        const filename = image.split('/').pop();
+        const fileType = filename.split('.').pop();
+        formData.append('file', {
+          uri: image,
+          name: filename,
+          type: `image/${fileType}`,
+        });
+      }
 
-      // Verifica se o email já está em uso
+      // Faz a requisição para o backend
       const response = await fetch(`http://${IP_PROVISORIO}/api/users/register`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
-        body: JSON.stringify(newUser),
+        body: formData,
       });
 
       const data = await response.json();
@@ -75,9 +82,9 @@ export default function Register({ navigation, route }) {
 
   useEffect(() => {
     if (route.params?.image) {
-      setImage(route.params.image)
+      setImage(route.params.image);
     }
-  }, [route.params?.image])
+  }, [route.params?.image]);
 
   return (
     <View style={styles.container}>
@@ -91,7 +98,7 @@ export default function Register({ navigation, route }) {
             color={"#FFFFFF"}
             backgroundColor={"#0168BC"}
             handlePress={() => navigation.navigate('UploadScreen', { from: 'RegisterScreen' })}
-            />
+          />
         </View>
       )}
       <Input iconName="user" placeholder="Nome" value={name} onChange={setName} />
@@ -112,7 +119,7 @@ export default function Register({ navigation, route }) {
         </Text>
       </Text>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -155,4 +162,4 @@ const styles = StyleSheet.create({
   flexGrow: {
     flex: 1,
   },
-})
+});

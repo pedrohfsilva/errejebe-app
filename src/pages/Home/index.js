@@ -27,6 +27,10 @@ export default function Home({ navigation }) {
     setLoading(true);
     try {
       const response = await fetch(`http://${IP_PROVISORIO}/api/posts`);
+      if (!response.ok) {
+        throw new Error('Erro ao carregar posts do usuário');
+      }
+      
       const json = await response.json();
       setData(json);
     } catch (error) {

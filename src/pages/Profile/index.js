@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
-import Button from '../../components/Button';
 import Post from '../../components/Post';
 import EditButton from '../../components/EditButton';
 import { IP_PROVISORIO } from '@env';
 
-// Supondo que você tenha a imagem no diretório de assets do projeto
-const luisFoto = require('../../../assets/luisfoto.jpeg');
-
 export default function Profile({ navigation, route }) {
   const { userId } = route.params
   const [posts, setPosts] = useState([]);
-  const [user, setUser] = useState({});
+  const [profileData, setProfileData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [loadingPosts, setLoadingPosts] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  async function fetchData() {
+  async function loadData() {
     setLoading(true);
     try {
       const [userResponse, postsResponse] = await Promise.all([
@@ -23,17 +20,38 @@ export default function Profile({ navigation, route }) {
         fetch(`http://${IP_PROVISORIO}/api/postsByUser/${userId}`)
       ]);
   
-      const userJson = await userResponse.json();
+      const profileJson = await userResponse.json();
       const postsJson = await postsResponse.json();
   
-      setUser(userJson);
+      setProfileData(profileJson);
       setPosts(postsJson);
     } catch (error) {
-      console.error('Error fetching data: ', error);
+      console.error('Error refreshing data: ', error);
     } finally {
       setLoading(false);
     }
   }
+
+  async function loadPosts() {
+    setLoadingPosts(true);
+    try {
+      const response = await fetch(`http://${IP_PROVISORIO}/api/posts`);
+      if (!response.ok) {
+        throw new Error('Erro ao carregar posts do usuário');
+      }
+
+      const json = await response.json();
+      setPosts(json);
+    } catch (error) {
+      console.error('Erro ao buscar dados: ', error);
+    } finally {
+      setLoadingPosts(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData()
+  }, [userId]);
   
   async function handleRefresh() {
     setRefreshing(true);
@@ -43,24 +61,20 @@ export default function Profile({ navigation, route }) {
         fetch(`http://${IP_PROVISORIO}/api/postsByUser/${userId}`)
       ]);
   
-      const userJson = await userResponse.json();
+      const profileJson = await userResponse.json();
       const postsJson = await postsResponse.json();
   
-      setUser(userJson);
+      setProfileData(profileJson);
       setPosts(postsJson);
     } catch (error) {
       console.error('Error refreshing data: ', error);
     } finally {
       setRefreshing(false);
     }
-  }  
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  }
 
   const renderHeader = () => {
-    if(!user) {
+    if(!profileData) {
       return null
     }
 
@@ -70,11 +84,11 @@ export default function Profile({ navigation, route }) {
           <View style={styles.profilePhotoContainer}>
             <Image 
               style={styles.profilePhoto}
-              source={luisFoto}
+              source={{ uri: `http://${IP_PROVISORIO}/${profileData.imageSrc}` }}
             />
           </View>
-          <Text style={styles.profileName} numberOfLines={1}>{user.name}</Text>
-          <Text style={styles.profileInfo} numberOfLines={1}>{user.positionCompany}</Text>
+          <Text style={styles.profileName} numberOfLines={1}>{profileData.name}</Text>
+          <Text style={styles.profileInfo} numberOfLines={1}>{profileData.positionCompany}</Text>
           <Text style={styles.publicationsText}>Publicações</Text>
         </View>
       </View>
@@ -83,7 +97,7 @@ export default function Profile({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      {loading ? (
+      { loading ? (
         <ActivityIndicator />
       ) : (
         <FlatList
@@ -127,6 +141,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
+    backgroundColor: "#ddd",
     marginBottom: 15,
     alignItems: 'center',
     justifyContent: 'center',
@@ -165,4 +180,4 @@ const styles = StyleSheet.create({
     color: '#444',
     textAlign: 'center',
   }
-});
+})

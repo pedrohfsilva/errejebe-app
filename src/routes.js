@@ -114,6 +114,7 @@ export function StackRoutesAuth() {
       <Stack.Screen name="RecoverPasswordScreen" component={RecoverPasswordScreen} options={{ headerTitle: 'Redefinir senha' }} />
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ headerTitle: 'Registrar' }} />
       <Stack.Screen name="NewPasswordScreen" component={NewPasswordScreen} options={{ headerTitle: 'Nova senha' }} />
+      <Stack.Screen name="UploadScreen" component={UploadScreen} options={{ headerTitle: 'Upload' }} />
     </Stack.Navigator>
   )
 }

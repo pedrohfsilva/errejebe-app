@@ -43,7 +43,7 @@ export default function Post({ navigation, postInfo }) {
             <View style={styles.profilePhotoContainer}>
               <Image
                 style={styles.profileProto}
-                source={{ uri: postInfo.user.photo }}
+                source={{ uri: `http://${IP_PROVISORIO}/${postInfo.user.imageSrc}` }}
               />
             </View>
             <View style={styles.profileInfo}>

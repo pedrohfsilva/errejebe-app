@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { IP_PROVISORIO } from '@env'
 
 export default function Comment({ navigation, commentInfo }) {
   return (
@@ -10,7 +11,7 @@ export default function Comment({ navigation, commentInfo }) {
             <View style={styles.profilePhotoContainer}>
               <Image 
                 style={styles.profileProto}
-                source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_wBNgIithcAFRt-Esqz467LbAUaO-9-Vwmg&s' }}
+                source={{ uri: `http://${IP_PROVISORIO}/${commentInfo.user.imageSrc}` }}
               />
             </View>
             <View style={styles.profileInfo}>

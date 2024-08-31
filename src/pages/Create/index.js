@@ -1,12 +1,16 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import  { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import PublishButton from "../../components/PublishButton"
+import { AuthContext } from "../../contexts/AuthContext"
+import { IP_PROVISORIO } from '@env'
 
 export default function Home({ navigation, route }) {
+  const { userId } = useContext(AuthContext);
+
+  const [profileData, setProfileData] = useState({})
   const [postText, setPostText] = useState('')
   const [image, setImage] = useState('')
-  const userId = '66cf7747d0a4c54263a8b4ff'; // Aqui você deve substituir pelo ID real do usuário, que pode ser obtido de diversas formas
 
   async function handlePublish() {
     if (postText === '') {
@@ -30,7 +34,7 @@ export default function Home({ navigation, route }) {
     }
   
     try {
-      const response = await fetch(`http://${process.env.IP_PROVISORIO}/api/posts`, {
+      const response = await fetch(`http://${IP_PROVISORIO}/api/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -58,6 +62,25 @@ export default function Home({ navigation, route }) {
     navigation.navigate('UploadScreen', { from: 'CreateScreen' })
   }
 
+  async function loadProfile() {
+    try {
+      const response = await fetch(`http://${IP_PROVISORIO}/api/users/${userId}`);
+      if (!response.ok) {
+        throw new Error('Erro ao carregar perfil do usuário');
+      }
+
+      const data = await response.json();
+      setProfileData(data); // Armazena os dados do perfil no estado
+    } catch (error) {
+      console.error('Erro ao carregar perfil do usuário:', error);
+      alert('Não foi possível carregar os dados do perfil.');
+    }
+  }
+
+  useEffect(() => {
+    loadProfile();
+  }, [userId]);
+
   useEffect(() => {
     if (route.params?.image) {
       setImage(route.params.image)
@@ -79,12 +102,12 @@ export default function Home({ navigation, route }) {
           <View style={styles.profilePhotoContainer}>
             <Image 
               style={styles.profileProto}
-              source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_wBNgIithcAFRt-Esqz467LbAUaO-9-Vwmg&s' }}
+              source={{ uri: `http://${IP_PROVISORIO}/${profileData.imageSrc}` }}
             />
           </View>
           <View style={styles.profileInfo}>
-            <Text style={styles.profileName} numberOfLines={1} >Pedro Henrique Ferreira Silva Pedro Henrique Ferreira Silva</Text>
-            <Text style={styles.profileCareer} numberOfLines={1}>Membro trainee</Text>
+            <Text style={styles.profileName} numberOfLines={1} >{profileData.name}</Text>
+            <Text style={styles.profileCareer} numberOfLines={1}>{profileData.positionCompany}</Text>
           </View>
         </View>
 
@@ -143,6 +166,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
+    backgroundColor: "#ddd",
   },
   profileProto: {
     flex: 1,
