@@ -5,11 +5,45 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { AuthContext } from '../../contexts/AuthContext';
 import { IP_PROVISORIO } from '@env';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [expoPushToken, setExpoPushToken] = useState(null);
+
   const { login } = useContext(AuthContext);
+
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+      });
+    }
+
+    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+
+    if (finalStatus !== 'granted') {
+      Alert.alert('Erro', 'Não foi possível obter permissão para notificações.');
+      return;
+    }
+
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    return token;
+  }
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+  }, []);
 
   async function handleLogin() {
     if (!email || !password) {
@@ -23,7 +57,7 @@ export default function Login({ navigation }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, expoPushToken }), // Inclui o expoPushToken no login
       });
 
       const data = await response.json();

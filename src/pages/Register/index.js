@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import Logo from '../../components/Logo';
 import Button from "../../components/Button";
@@ -6,6 +6,9 @@ import EditButton from '../../components/EditButton';
 import Input from "../../components/Input";
 import { Feather } from '@expo/vector-icons';
 import { IP_PROVISORIO } from '@env';
+import { AuthContext } from "../../contexts/AuthContext";
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 
 export default function Register({ navigation, route }) {
   const [image, setImage] = useState('');
@@ -14,10 +17,73 @@ export default function Register({ navigation, route }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [expoPushToken, setExpoPushToken] = useState(null);
+
+  const { login } = useContext(AuthContext);
+
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+      });
+    }
+
+    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+
+    if (finalStatus !== 'granted') {
+      Alert.alert('Erro', 'Não foi possível obter permissão para notificações.');
+      return;
+    }
+
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    return token;
+  }
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+  }, []);
 
   function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  }
+
+  async function handleLogin() {
+    if (!email || !password) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://${IP_PROVISORIO}/api/users/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password, expoPushToken }), // Inclui o expoPushToken no login
+      });
+
+      const data = await response.json();
+
+      if (response.status === 200) {
+        const { token } = data;
+        await login(token); // Chama a função login do AuthContext para armazenar o token e atualizar o estado
+        Alert.alert('Sucesso', 'Login realizado com sucesso!');
+      } else {
+        Alert.alert('Erro', data.msg || 'Não foi possível realizar o login.');
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Erro', 'Houve um problema ao conectar ao servidor.');
+    }
   }
 
   async function handleRegister() {
@@ -43,6 +109,7 @@ export default function Register({ navigation, route }) {
       formData.append('positionCompany', department);
       formData.append('email', email);
       formData.append('password', password);
+      formData.append('expoPushToken', expoPushToken); // Adiciona o expoPushToken
 
       // Se uma imagem foi selecionada, adicione-a ao FormData
       if (image) {
@@ -70,7 +137,7 @@ export default function Register({ navigation, route }) {
         Alert.alert('Erro', data.msg); // Exibe a mensagem de erro retornada pela API
       } else if (response.status === 201) {
         Alert.alert('Sucesso', 'Usuário registrado com sucesso.');
-        navigation.navigate('LoginScreen');
+        handleLogin();
       } else {
         Alert.alert('Erro', 'Houve um problema ao registrar o usuário.');
       }
