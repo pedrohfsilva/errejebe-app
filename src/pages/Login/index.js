@@ -1,12 +1,11 @@
-import { useState, useContext } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { useState, useContext, useEffect } from 'react';
+import { View, Text, StyleSheet, Alert, Platform } from 'react-native';
 import Logo from '../../components/Logo';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { AuthContext } from '../../contexts/AuthContext';
 import { IP_PROVISORIO } from '@env';
 import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
@@ -24,11 +23,11 @@ export default function Login({ navigation }) {
       });
     }
 
-    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
 
     if (existingStatus !== 'granted') {
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
 
@@ -80,7 +79,7 @@ export default function Login({ navigation }) {
       <Logo />
       <Text style={styles.text}>Insira suas informações de login para entrar</Text>
       <Input iconName="mail" placeholder="E-mail" value={email} onChange={setEmail} />
-      <Input iconName="lock" placeholder="Senha" value={password} onChange={setPassword} secureTextEntry />
+      <Input iconName="lock" placeholder="Senha" value={password} onChange={setPassword} isPassword />
       <View style={styles.flexGrow} />
       <Button buttonText="Entrar" handlePress={handleLogin} />
       <Text style={styles.text}>

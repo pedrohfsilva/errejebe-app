@@ -1,10 +1,8 @@
 import React from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { IP_PROVISORIO } from '@env'
 
-// Assuming you have the image in your project's assets folder
-const luisFoto = require('../../assets/luisfoto.jpeg');
-
-export default function Notification({ navigation, notificationId }) {
+export default function Notification({ navigation, notificationInfo }) {
   return (
     <View style={styles.container}>
       <View style={styles.notificationContainer}>
@@ -12,11 +10,11 @@ export default function Notification({ navigation, notificationId }) {
           <View style={styles.profilePhotoContainer}>
             <Image
               style={styles.profilePhoto}
-              source={luisFoto}
+              source={{ uri: `http://${IP_PROVISORIO}/${notificationInfo.user.imageSrc}` }}
             />
           </View>
         </TouchableOpacity>
-        <Text style={styles.notificationText}>Elon Musk comentou "ufheifheo hfihi hfioeh hfie fhihf ihefh ihfeifhe ihfioh ihfiheifhio hfioeh ioefhioehfiohe iehifehi"</Text>
+        <Text style={styles.notificationText}>{notificationInfo.user.name} comentou "{notificationInfo.text}"</Text>
       </View>
       <Text style={styles.timeNotification}>há 2 min</Text>
     </View>

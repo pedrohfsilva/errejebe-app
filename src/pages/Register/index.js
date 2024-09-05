@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Image, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, Alert, Platform } from 'react-native';
 import Logo from '../../components/Logo';
 import Button from "../../components/Button";
 import EditButton from '../../components/EditButton';
@@ -8,7 +8,6 @@ import { Feather } from '@expo/vector-icons';
 import { IP_PROVISORIO } from '@env';
 import { AuthContext } from "../../contexts/AuthContext";
 import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
 
 export default function Register({ navigation, route }) {
   const [image, setImage] = useState('');
@@ -30,11 +29,11 @@ export default function Register({ navigation, route }) {
       });
     }
 
-    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
 
     if (existingStatus !== 'granted') {
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
 
