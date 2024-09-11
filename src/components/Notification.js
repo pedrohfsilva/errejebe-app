@@ -16,7 +16,7 @@ export default function Notification({ navigation, notificationInfo }) {
         </TouchableOpacity>
         <Text style={styles.notificationText}>{notificationInfo.user.name} comentou "{notificationInfo.text}"</Text>
       </View>
-      <Text style={styles.timeNotification}>há 2 min</Text>
+      <Text style={styles.timeNotification}>{timeAgo(notificationInfo.createdAt)}</Text>
     </View>
   );
 }

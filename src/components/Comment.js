@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { IP_PROVISORIO } from '@env'
+import timeAgo from '../utils/time';
 
 export default function Comment({ navigation, commentInfo }) {
   return (
@@ -19,7 +20,7 @@ export default function Comment({ navigation, commentInfo }) {
             </View>
           </View>
         </TouchableOpacity>
-        <Text style={styles.commentDate}>há 2 min</Text>
+        <Text style={styles.commentDate}>{timeAgo(commentInfo.createdAt)}</Text>
       </View>
       <View style={styles.commentContainer}>
         <Text style={styles.commentText}>
@@ -52,7 +53,8 @@ const styles = StyleSheet.create({
   profilePhotoContainer: {
     width: 32,
     height: 32,
-    borderRadius: 16,
+    backgroundColor: "#ddd",
+    borderRadius: 999
   },
   profileProto: {
     flex: 1,

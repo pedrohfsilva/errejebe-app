@@ -1,28 +1,28 @@
-import { useState, useEffect, useContext } from "react"
-import  { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView } from 'react-native'
-import { Feather } from '@expo/vector-icons'
-import PublishButton from "../../components/PublishButton"
-import { AuthContext } from "../../contexts/AuthContext"
-import { IP_PROVISORIO } from '@env'
+import { useState, useEffect, useContext, useCallback } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native'; // Importando o useFocusEffect
+import PublishButton from "../../components/PublishButton";
+import { AuthContext } from "../../contexts/AuthContext";
+import { IP_PROVISORIO } from '@env';
 
 export default function Home({ navigation, route }) {
   const { userId } = useContext(AuthContext);
 
-  const [profileData, setProfileData] = useState({})
-  const [postText, setPostText] = useState('')
-  const [image, setImage] = useState('')
+  const [profileData, setProfileData] = useState({});
+  const [postText, setPostText] = useState('');
+  const [image, setImage] = useState('');
 
   async function handlePublish() {
     if (postText === '') {
       alert('Escreva algo antes de publicar');
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('userId', userId);
     formData.append('text', postText);
-  
-    // Se uma imagem foi selecionada, adicione-a ao FormData
+
     if (image) {
       const filename = image.split('/').pop();
       const fileType = filename.split('.').pop();
@@ -32,7 +32,7 @@ export default function Home({ navigation, route }) {
         type: `image/${fileType}`,
       });
     }
-  
+
     try {
       const response = await fetch(`http://${IP_PROVISORIO}/api/posts`, {
         method: 'POST',
@@ -41,14 +41,14 @@ export default function Home({ navigation, route }) {
         },
         body: formData,
       });
-  
+
       if (!response.ok) {
         throw new Error('Erro ao criar o post');
       }
-  
+
       const data = await response.json();
       alert(data.msg);
-  
+
       // Limpar os campos após o sucesso da publicação
       setPostText('');
       setImage('');
@@ -56,10 +56,10 @@ export default function Home({ navigation, route }) {
       console.error('Erro ao publicar o post:', error);
       alert('Ocorreu um erro ao publicar o post. Tente novamente.');
     }
-  }  
+  }
 
   function handleLoadImage() {
-    navigation.navigate('UploadScreen', { from: 'CreateScreen' })
+    navigation.navigate('UploadScreen', { from: 'CreateScreen' });
   }
 
   async function loadProfile() {
@@ -77,15 +77,17 @@ export default function Home({ navigation, route }) {
     }
   }
 
-  useEffect(() => {
-    loadProfile();
-  }, [userId]);
+  useFocusEffect(
+    useCallback(() => {
+      loadProfile();
+    }, [userId])
+  );
 
   useEffect(() => {
     if (route.params?.image) {
-      setImage(route.params.image)
+      setImage(route.params.image);
     }
-  }, [route.params?.image])
+  }, [route.params?.image]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -112,14 +114,13 @@ export default function Home({ navigation, route }) {
         </View>
 
         <View style={styles.loadImageContainer}>
-          {image == '' ? (
+          {image === '' ? (
             <TouchableOpacity onPress={handleLoadImage}>
               <View style={styles.loadImageButton}>
                 <Feather name="plus-circle" size={60} color="#0168BCbb" />
                 <Text style={styles.loadImageText}>Carregar imagem</Text>
               </View>
             </TouchableOpacity>
-            
           ) : (
             <>
               <Image
@@ -132,7 +133,7 @@ export default function Home({ navigation, route }) {
                 </View>
               </TouchableOpacity>
             </>
-            )}
+          )}
         </View>
         <View style={styles.postTextInputContainer}>
           <TextInput 
@@ -145,7 +146,7 @@ export default function Home({ navigation, route }) {
         </View>
       </ScrollView>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
   loadImageText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#0168BCbb'
+    color: '#0168BCbb',
   },
   uploadedPhoto: {
     width: '100%',
@@ -235,4 +236,4 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#222',
   },
-})
+});

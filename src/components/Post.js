@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { IP_PROVISORIO } from '@env'
+import timeAgo from '../utils/time';
 
 export default function Post({ navigation, postInfo }) {
   const [liked, setLiked] = useState(postInfo.likes.includes(postInfo.user._id)); // Supondo que você tenha o ID do usuário
@@ -52,7 +53,7 @@ export default function Post({ navigation, postInfo }) {
             </View>
           </View>
         </TouchableOpacity>
-        <Text style={styles.postDate}>há 2 min</Text>
+        <Text style={styles.postDate}>{timeAgo(postInfo.createdAt)}</Text>
       </View>
 
       {/* Conteúdo do post */}
@@ -109,6 +110,8 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
+    backgroundColor: "#ddd",
+    borderRadius: 999
   },
   profileProto: {
     flex: 1,

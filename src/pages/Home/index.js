@@ -43,6 +43,7 @@ export default function Home({ navigation }) {
   // Função para atualizar os dados ao puxar para atualizar
   async function handleRefresh() {
     setRefreshing(true);
+
     try {
       const response = await fetch(`http://${IP_PROVISORIO}/api/posts`);
       const json = await response.json();

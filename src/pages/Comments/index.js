@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, FlatList, R
 import { Feather } from '@expo/vector-icons';
 import { IP_PROVISORIO } from '@env';
 import { AuthContext } from "../../contexts/AuthContext";
+import timeAgo from "../../utils/time";
 
 import Comment from '../../components/Comment';
 
@@ -101,7 +102,7 @@ export default function Comments({ navigation, route }) {
             </View>
           </View>
         </TouchableOpacity>
-        <Text style={styles.postDate}>há 2 min</Text>
+        <Text style={styles.postDate}>{timeAgo(postInfo.createdAt)}</Text>
       </View>
       <View style={styles.post}>
         <View style={styles.postImageContainer}>
@@ -193,7 +194,8 @@ const styles = StyleSheet.create({
   profilePhotoContainer: {
     width: 48,
     height: 48,
-    borderRadius: 24,
+    backgroundColor: "#ddd",
+    borderRadius: 999
   },
   profileProto: {
     flex: 1,

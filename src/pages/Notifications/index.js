@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, Alert, RefreshControl } from 'react-native';
 import Notification from '../../components/Notification';
 import { IP_PROVISORIO } from '@env';
 
 export default function Notifications({ navigation }) {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   // Função para buscar as notificações do usuário
   async function fetchNotifications() {
@@ -27,13 +28,31 @@ export default function Notifications({ navigation }) {
     }
   }
 
+  // Função para atualizar as notificações ao puxar para atualizar
+  async function handleRefresh() {
+    setRefreshing(true);
+    try {
+      const userId = "user_id_example"; // Substitua com o ID do usuário logado
+      const response = await fetch(`http://${IP_PROVISORIO}/api/notification/${userId}`);
+      const data = await response.json();
+
+      if (response.status === 200) {
+        setNotifications(data);
+      } else {
+        Alert.alert('Erro', 'Erro ao atualizar notificações.');
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar notificações:', error);
+      Alert.alert('Erro', 'Erro de conexão ao atualizar notificações.');
+    } finally {
+      setRefreshing(false);
+    }
+  }
+
   useEffect(() => {
     fetchNotifications();
   }, []);
 
-  // Função para renderizar cada item da lista
-
-  // Exibição de um indicador de carregamento ou a lista de notificações
   return (
     <View style={styles.container}>
       {loading ? (
@@ -42,7 +61,13 @@ export default function Notifications({ navigation }) {
         <FlatList
           data={notifications}
           keyExtractor={(item) => item._id.toString()}
-          renderItem={() => <Notification notificationInfo={item} />}
+          renderItem={({ item }) => <Notification notificationInfo={item} />}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh} // Chama a função de refresh ao puxar para baixo
+            />
+          }
           showsVerticalScrollIndicator={false}
         />
       )}
