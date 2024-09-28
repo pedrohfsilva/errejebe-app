@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, Alert, RefreshControl } from 'react-native';
 import Notification from '../../components/Notification';
 import { IP_PROVISORIO } from '@env';
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Notifications({ navigation }) {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
+  const { userId } = useContext(AuthContext)
+
   // Função para buscar as notificações do usuário
   async function fetchNotifications() {
     try {
-      const userId = "user_id_example"; // Substitua com o ID do usuário logado
       const response = await fetch(`http://${IP_PROVISORIO}/api/notification/${userId}`);
       const data = await response.json();
 
@@ -61,7 +63,7 @@ export default function Notifications({ navigation }) {
         <FlatList
           data={notifications}
           keyExtractor={(item) => item._id.toString()}
-          renderItem={({ item }) => <Notification notificationInfo={item} />}
+          renderItem={({ item }) => <Notification navigation={navigation} notificationInfo={item} />}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}

@@ -16,7 +16,6 @@ export default function Search({ navigation, userId }) {
     try {
       const response = await fetch(`http://${IP_PROVISORIO}/api/users`);
       const json = await response.json();
-      console.log('Users fetched:', json); // Log para verificar os dados retornados
       setUsers(json);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -43,6 +42,11 @@ export default function Search({ navigation, userId }) {
     fetchData();
   }, []);
 
+  // Filtrar os usuários de acordo com o texto de pesquisa
+  const filteredUsers = users.filter(user => 
+    user.name.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.searchInputContainer}>
@@ -59,7 +63,7 @@ export default function Search({ navigation, userId }) {
           <ActivityIndicator />
         ) : (
           <FlatList 
-            data={users}
+            data={filteredUsers}
             keyExtractor={item => item._id.toString()}
             renderItem={({ item }) => (
               <ProfileSearch navigation={navigation} userInfo={item} />
@@ -83,7 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 15,
-    paddingVertical: 15,
+    paddingTop: 15,
   },
   searchInputContainer: {
     width: '100%',

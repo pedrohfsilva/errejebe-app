@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { IP_PROVISORIO } from '@env'
+import { IP_PROVISORIO } from '@env';
+import timeAgo from '../utils/time';
 
 export default function Notification({ navigation, notificationInfo }) {
   return (
     <View style={styles.container}>
       <View style={styles.notificationContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen", {userId: 3720738})}>
+        <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen", {userId: notificationInfo.user._id})}>
           <View style={styles.profilePhotoContainer}>
             <Image
               style={styles.profilePhoto}
@@ -14,7 +15,7 @@ export default function Notification({ navigation, notificationInfo }) {
             />
           </View>
         </TouchableOpacity>
-        <Text style={styles.notificationText}>{notificationInfo.user.name} comentou "{notificationInfo.text}"</Text>
+        <Text style={styles.notificationText}>{notificationInfo.user.name} {notificationInfo.text}</Text>
       </View>
       <Text style={styles.timeNotification}>{timeAgo(notificationInfo.createdAt)}</Text>
     </View>

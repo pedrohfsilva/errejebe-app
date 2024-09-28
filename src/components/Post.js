@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { IP_PROVISORIO } from '@env'
 import timeAgo from '../utils/time';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function Post({ navigation, postInfo }) {
   const [liked, setLiked] = useState(postInfo.likes.includes(postInfo.user._id)); // Supondo que você tenha o ID do usuário
   const [likeCount, setLikeCount] = useState(postInfo.likes.length);
 
+  const { userId } = useContext(AuthContext)
+
   useEffect(() => {
-    setLiked(postInfo.likes.includes(postInfo.user._id))
+    setLiked(postInfo.likes.includes(userId))
     setLikeCount(postInfo.likes.length)
   }, [postInfo])
 
@@ -20,13 +23,13 @@ export default function Post({ navigation, postInfo }) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ userId: postInfo.user._id }) // Substitua 'id_do_usuario' pelo ID real do usuário
+        body: JSON.stringify({ userId: userId }) // Substitua 'id_do_usuario' pelo ID real do usuário
       });
 
       if (response.ok) {
         const updatedPost = await response.json();
 
-        setLiked(updatedPost.updatedPost.likes.includes(postInfo.user._id));
+        setLiked(updatedPost.updatedPost.likes.includes(userId));
         setLikeCount(updatedPost.updatedPost.likes.length);
       } else {
         console.error('Erro ao alternar o like');
@@ -58,12 +61,14 @@ export default function Post({ navigation, postInfo }) {
 
       {/* Conteúdo do post */}
       <View style={styles.post}>
-        <View style={styles.postImageContainer}>
-          <Image
-            style={styles.postImage}
-            source={{ uri: `http://${IP_PROVISORIO}/${postInfo.imageSrc}` }}
-          />
-        </View>
+        {postInfo.imageSrc && (
+          <View style={styles.postImageContainer}>
+            <Image
+              style={styles.postImage}
+              source={{ uri: `http://${IP_PROVISORIO}/${postInfo.imageSrc}` }}
+            />
+          </View>
+        )}
         <View style={styles.postTextContainer}>
           <Text style={styles.postText}>{postInfo.text}</Text>
         </View>
